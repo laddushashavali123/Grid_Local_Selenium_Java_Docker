@@ -1,0 +1,79 @@
+Referece:
+	- 
+
+Selenium built-in waiting mechanisms:
+	+ Page load timeout: 
+		- The amount of time that Selenium will wait for a page to load. By default, it is set to 0 (which equates to an infnite timeout). 
+		- If you want to ensure that an error is thrown if your page takes longer than expected to load by using the following code:
+			driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
+			// If your page does not load within 15 seconds, a WebDriverException will be thrown
+	=> Not recommend this since it is not complete accuracy with modern website (build heavily with Javascript)
+	
+	+ Script timeout:
+		- Amount of time that Selenium will wait for a bit of JavaScript to execute when you use the executeAsyncScript() method.
+		- This Exception will be thrown if timeout: org.openqa.selenium.TimeoutException: Script execution failed. 
+		
+	+ Implicit wait timeout:
+		- It is not originally a part of the WebDriver API. It is a hangover from the old Selenium 1 API.
+		- The implicit wait will tell to the web driver to wait for certain amount of time before it throws a "No Such Element Exception"
+		EX:
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+			//wait for up to 15 seconds for an element to appear in the DOM when trying to fnd it.
+	=> Not recommend this since this has many problematic
+	
+	
+	+ Explicit wait timeout: https://seleniumjava.com/2016/04/05/the-beginners-guide-to-explicit-waits/
+		- The explicit wait is used to tell the Web Driver to wait for certain conditions.
+		- There is already a class full of pre-canned examples called ExpectedConditions:
+			alertIsPresent()                    : wait for alert appear
+			elementSelectionStateToBe()         :
+			elementToBeClickable()              : wait for element that visible and click-able
+			elementToBeSelected()               :
+			frameToBeAvaliableAndSwitchToIt()   : wait for an iframe appear
+			invisibilityOfTheElementLocated()   :
+			invisibilityOfElementWithText()     :
+			presenceOfAllElementsLocatedBy()    : wait for all elements appear
+			presenceOfElementLocated()          : wait for element appear
+			textToBePresentInElement()          : wait for a text appear in element
+			textToBePresentInElementLocated()   : wait for a text appear in element
+			textToBePresentInElementValue()     : wait for a text appear in element
+			titleIs()                           : wait for a title of a website is
+			titleContains()                     : wait for a title of a website contains
+			visibilityOf()                      : wait for element that visible (enabled and size > 0)
+			visibilityOfAllElements()           : wait for element that visible (enabled and size > 0)
+			visibilityOfAllElementsLocatedBy()  : wait for element that visible (enabled and size > 0)
+			visibilityOfElementLocated()        : wait for element that visible (enabled and size > 0)
+		- EX:
+			public WebElement getWhenVisible(By locator, int timeout, int polling) {
+				WebElement element = null;
+				// Setup new wait instance include: target driver, timeout time, repeate time to check the condition (optional)
+				WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds, pollingTimeInMillis);
+				element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+				return element;
+			}
+		
+		
+	+ Fluent wait time out:
+		- FluentWait is class in selenium which implements Wait interface, WebDriverWait (Explicit wait) is subclass of FluentWait.
+		- When we should use FluentWait:
+			. When you do not find suitable expected wait condition in explicit wait.
+			. To handle dynamic web elements.
+			. You need to do more then just waiting.
+			. When you need to create your own customized wait conditions.
+		EX:
+			// This is same function as above explicit example above
+			// Waiting 30 seconds for an element to be present on the page, checking
+			// for its presence once every 5 seconds.
+			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+			   .withTimeout(30, SECONDS)
+			   .pollingEvery(5, SECONDS)
+			   .ignoring(NoSuchElementException.class);
+
+		   WebElement foo = wait.until(new Function<WebDriver, WebElement>() {
+			 public WebElement apply(WebDriver driver) {
+			   // Do some fucking thing more bla bla bla
+			   return driver.findElement(By.id("foo"));
+			 }
+		   });
+
+		

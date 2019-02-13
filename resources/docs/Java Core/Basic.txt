@@ -1,0 +1,402 @@
+Ref:
+	- http://tutorials.jenkov.com/java/index.html
+	- https://www.javatpoint.com/java-if-else
+
+========================================================================================================================
+	Variable
+========================================================================================================================
+- Local Variable: a variable which is declared inside the method is called local variable.
+
+- Instance Variable: a variable which is declared inside the class but outside the method, is called instance variable.
+It is not declared as static.
+
+- Static variable: a variable that is declared as static is called static variable. It cannot be local.
+
+- Java is case-sensitive language, which means Hello and hello are 2 different variables.
+
+- Primitive/Value type variable: A data type is a value type if it holds a data value within its own memory space.
+It means variables of these data types directly contain their values.
+			Type Name 		Example 		Range of Values									Java							
+			---------		-------			---------------									---------------
+			byte 			42 				–128 to 127										byte i    = 42;
+			short 			42 				–32768 to 32767									short i   = 42;
+			int 			42 				–2147483648 to 2147483647						int i     = 42;
+			long 			42L 			–9223372036854775808 to 9223372036854775807		long i    = 42;
+			float 			42.0F			–3.4 × 1038 to 3.4 × 1038						float i   = 42.0;
+			double 			42.0			–1.8 × 10308 to 1.8 × 10308						double i  = 42.0;
+			char 			'A' 			Thousands of characters, glyphs, and symbols	char i    = 'i';
+			boolean 		true 			true, false										boolean i = true;
+
+- Reference type variable: a reference type doesn't store its value directly. Instead, it stores the address where the
+value is being stored. In other words, a reference type contains a pointer to another memory location that holds the data.
+		Type Name 		Example			Java
+		---------		-------			-------
+		Class			class.java		class Class;
+		String			'ABCD'			String i = 'ABCD';
+		Array			[1,2,3]			double myList[] = {1, 2, 3} ;
+		ArrayList		[1,2,3]			ArrayList<String> myList = new ArrayList<>(); myList.add(1)
+
+- Access array value : for (variable-type variable-name : range-of-values) {}
+  	int guests[] = {1, 4, 2, 0, 2, 1, 4, 3, 0, 2};
+  	for (int numGuests : guests) {out.print(numGuests);}
+
+- Widening variable:
+    int i = 10;
+    float f = i;
+
+- Narrowing variable:
+    float f = 10.1;
+    int i = (int)f;
+
+========================================================================================================================
+    Collection
+========================================================================================================================
+- Note:
+    1. Array is not in the collection variable.
+    2. Collection does not store the primitive type value, it converts the primitive value into an object of that type.
+    EX: When we do arraylist.add(1) -> it converts the primitive int data type into an Integer object.
+
+- Array: Simple fixed sized arrays . Array can contain both primitive data types as well as objects of a class depending
+on the definition of the array. Array member is accessed via the index which start from 0
+	int arr[] = new int[10];
+	arr[0] = 1;
+	System.out.println(arr[0]);
+
+- ArrayList : Dynamic sized arrays in Java that implement List interface. ArrayList only supports object entries, not
+the primitive data types. EX:
+	ArrayList<Type> arrlist = new ArrayList<Type>();
+	arrL.add(1);
+	System.out.println(arrL.get(0));
+
+- List<E> : An ordered collection that can contain duplicate elements. The user can access elements by their integer
+index (position in the list - start from 0). List implementation Type uses LinkedList or ArrayList.
+	List<Type> myList = new ArrayList<Type>();
+	myList.add(1);							// Add value 1 to first position
+	myList.remove(0);						// Remove the first position of this list
+	listA.add(0, "element 0");				// Add a String to first position of the list
+	int size = myList.size();				// Get the List Size
+	int value = myList.get(0);				// Get the value at the first position
+	myList.clear();							// Remove all value in the list
+	for(Type aString : myList) {			// Loop through and show all item of myList
+		System.out.println(aString);
+	}
+
+- Set<E> : A collection that contains no duplicate elements (sets contain no pair of elements e1 and e2 such that
+e1.equals(e2), and at most one null element). Set order depends on the implementation. Set implementation Type uses
+HashSet (unordered), LinkedHashSet (ordered) or TreeSet (sorted by natural order or by provided comparator).
+Set does not allow to direct access, you have to loop through all elements.
+	Set setA = new HashSet();
+	mySet.add(1);						// Add new integer object 1.
+	mySet.add("WTF");					// Add new String object WTF
+	mySet.remove(1);					// Remove object 1
+	mySet.remove("WTF");				// Remove object WTF
+	for(Object aString : setA){			// Loop through and show all item of mySet
+           System.out.println(aString);
+       }
+
+
+========================================================================================================================
+    Dictionary
+========================================================================================================================
+Map interface (https://docs.oracle.com/javase/9/docs/api/java/util/Map.html):
+    - A map contains values on the basis of key i.e. key and value pair. Each key and value pair is known as an entry.
+    - Map contains only unique keys.
+    - Several methods throw a NoSuchElementException when no items exist in the invoking map.
+    - A ClassCastException is thrown when an object is incompatible with the elements in a map.
+    - A NullPointerException is thrown if an attempt is made to use a null object and null is not allowed in the map.
+    - An UnsupportedOperationException is thrown when an attempt is made to change an unmodifiable map.
+    - Example:
+        import java.util.*;
+        class MapInterfaceExample{
+            public static void main(String args[]){
+                Map<Integer,String> map=new HashMap<Integer,String>();
+                map.put(100,"Amit");
+                map.put(101,"Vijay");
+                map.put(102,"Rahul");
+                map.remove(101);
+                for(Map.Entry m:map.entrySet()){
+                    System.out.println(m.getKey()+" "+m.getValue());
+        }}}
+
+HashMap (https://docs.oracle.com/javase/6/docs/api/java/util/HashMap.html):
+    - HashMap inherits AbstractMap class and implements Map interface.
+    - HashMap contains values based on the key.
+    - HashMap contains only unique elements.
+    - HashMap ALLOW one null key and multiple null values.
+    - HashMap is un-synchronized (no order) so it does not guarantee that the order will remain constant over time.
+    - HashMap is faster than Hashtable.
+    - We can make the HashMap as synchronized by calling this code: Map m = Collections.synchronizedMap(hashMap);
+    - Example:
+        import java.util.*;
+        class TestCollection13{
+            public static void main(String args[]){
+             HashMap<Integer,String> hm=new HashMap<Integer,String>();
+             hm.put(100,"Amit");
+             hm.put(101,"Vijay");
+             hm.put(102,"Rahul");
+             for(Map.Entry m:hm.entrySet()){
+                System.out.println(m.getKey()+" "+m.getValue());
+        }}}
+
+LinkedHashMap (https://www.javatpoint.com/java-linkedhashmap):
+    - LinkedHashMap inherits HashMap class and implements the Map interface.
+    - LinkedHashMap is same as HashMap instead maintains insertion ORDER (HAS ORDER).
+    - LinkedHashMap ALLOW one null key and multiple null values.
+    - Example:
+        import java.util.*;
+        class TestCollection14{
+            public static void main(String args[]){
+                LinkedHashMap<Integer,String> hm=new LinkedHashMap<Integer,String>();
+                hm.put(100,"Amit");
+                hm.put(101,"Vijay");
+                for(Map.Entry m:hm.entrySet()){
+                    System.out.println(m.getKey()+" "+m.getValue());
+        }}}
+
+Hashtable (https://docs.oracle.com/javase/6/docs/api/java/util/Hashtable.html):
+    - Hashtable inherits Dictionary class and implements the Map interface.
+    - Hashtable contains values based on the key.
+    - Hashtable contains only unique elements.
+    - Hashtable DOES NOT ALLOW null key and null values.
+    - Hashtable is synchronized (HAS ORDER).
+    - Example:
+        import java.util.*;
+        class TestCollection16{
+            public static void main(String args[]){
+                Hashtable<Integer,String> hm=new Hashtable<Integer,String>();
+                hm.put(100,"Amit");
+                hm.put(102,"Ravi");
+                hm.put(101,"Vijay");
+                hm.put(103,"Rahul");
+                for(Map.Entry m:hm.entrySet()){
+                    System.out.println(m.getKey()+" "+m.getValue());
+        }}}
+
+TreeMap (https://www.javatpoint.com/java-treemap):
+    - TreeMap provides an efficient means of storing key/value pairs in sorted order.
+    - TreeMap implements the NavigableMap interface and extends AbstractMap class.
+    - TreeMap contains only unique elements.
+    - TreeMap DOES NOT ALLOW null key but can have multiple null values.
+    - TreeMap is same as HashMap instead maintains ascending order (HAS ORDER).
+    - Example:
+        import java.util.*;
+        class TestCollection15{
+            public static void main(String args[]){
+                TreeMap<Integer,String> hm=new TreeMap<Integer,String>();
+                 hm.put(100,"Amit");
+                 hm.put(102,"Ravi");
+                 hm.put(101,"Vijay");
+                 hm.put(103,"Rahul");
+                for(Map.Entry m:hm.entrySet()){
+                    System.out.println(m.getKey()+" "+m.getValue());
+        }}}
+
+
+========================================================================================================================
+    Operators
+========================================================================================================================
+    Relational 	Means 							Example
+    -------- 	------							---------------
+	== 			is equal to 					numberOfCows == 5
+	!= 			is not equal to 				buttonClicked != panicButton
+	< 			is less than 					numberOfCows < 5
+	> 			is greater than 				myInitial > 'B'
+	<= 			is less than or equal to 		numberOfCows <= 5
+	>= 			is greater than or equal to 	myInitial >= 'B
+
+	Logical 	Means 							Example
+    -------- 	------							---------------
+	&& 			and						 		5 < x && x < 10
+	|| 			or 								x < 5 || 10 < x
+	! 			not 							!password.equals("swordfish")
+
+- Compare character: the letters A through Z are stored with numeric codes 65 through 90. The letters a through z are
+stored with codes 97 through 122. That’s why each uppercase letter is smaller than each lowercase letter.
+
+- Compare String: we cannot compare 2 String with equal operator, we have to use the method named equals.
+EX: password.equals("swordfish") or "swordfish".equals(password)
+
+- Compare float number: due to fixed-point math issue 0.1 + 0.2 = 0.30000000000000004 so 0.1 + 0.2 == 0.3 will return
+false so we have to use Float.compare(floatNum1,floatNum2)
+
+- Conditional/Ternary operator is mini if statement with 1 line: conditionToBeTested? expression1 : expression2
+	(a > b) ? "a bigger" : "a smaller"
+
+- Compound assignments operator is combine the arithmetic operators with the simple assignment operator.
+    x+=1;       // equal: x = x +1;
+
+- Boolean Operators:
+    True  and True  is True
+    True  and False is False
+    False and True  is False
+    False and False is False
+
+    True  or True  is True
+    True  or False is True
+    False or True  is True
+    False or False is False
+
+    Not True  is False
+    Not False is True
+
+========================================================================================================================
+    Unary Operators
+========================================================================================================================
+int a = 1;
+// Postincrement - The computer adds 1 to the variable’s value before the variable is used in any other part of the statement.
+System.out.print(a++);		// 1
+//Preincrement - The computer adds 1 to the variable’s value after the variable is used in any other part of the statement.
+System.out.print(++a);		// 2		
+
+========================================================================================================================
+    Statements
+========================================================================================================================
+- If statement tests the condition. It executes the if block if condition is true:
+    if(condition1){
+        //code to be executed if condition1 is true
+    }else if(condition2){
+        //code to be executed if condition2 is true
+    }
+    ...
+    else{
+    //code to be executed if all the conditions are false
+    }
+
+- Switch statement executes one statement from multiple conditions. It is like if-else-if ladder statement:
+    switch(expression){
+        case value1:
+             //code to be executed;
+             break;  //optional
+        case value2:
+             //code to be executed;
+             break;  //optional
+        ......
+        default:
+            //code to be executed if all cases are not matched;
+    }
+
+- For loop is used to iterate a part of the program several times. If the number of iteration is fixed, it is recommended
+to use for loop. There are 3 types of for loop:
+    1. Simple For Loop: initialize variable, check condition and increment/decrement value
+        for(initialization; condition; incr/decr){
+            //code to be executed
+        }
+    2. for-each loop is used to traverse array or collection. It returns element one by one in the defined variable.
+        for(Type var:array){
+            //code to be executed
+        }
+    3. Labeled For Loop/Nest loop
+        for(initialization; condition; incr/decr){
+            //code to be executed
+            for(initialization; condition; incr/decr){
+                //code to be executed
+            }
+        }
+
+- While loop is used to iterate a part of the program several times. If the number of iteration is not fixed, it is
+recommended to use while loop. There is 2 types of while loop:
+    1. Simple while loop
+        while(condition){
+            //code to be executed
+        }
+    2. do-while loop
+        do{
+            //code to be executed
+        }while(condition);
+
+- Break: s used to break loop or switch statement. It breaks the current flow of the program at specified condition. In
+case of inner loop, it breaks only inner loop.
+    for(int i=1;i<=10;i++){
+        if(i==5){
+        break;
+    }
+
+- Continue: is used to continue loop. It continues the current flow of the program and skips the remaining code
+at specified condition. In case of inner loop, it continues only inner loop.
+    if(i==5){
+        continue;
+    }
+
+
+========================================================================================================================
+	Java Naming conventions
+========================================================================================================================
+class name	    : should start with uppercase letter and be a noun e.g. String, Color, Button, System, Thread etc.
+interface name	: should start with uppercase letter and be an adjective e.g. Runnable, Remote, ActionListener etc.
+method name	    : should start with lowercase letter and be a verb e.g. actionPerformed(), main(), print(), etc.
+variable name	: should start with lowercase letter e.g. firstName, orderNumber etc.
+package name	: should be in lowercase letter e.g. java, lang, sql, util etc.
+constants name	: should be in uppercase letter. e.g. RED, YELLOW, MAX_PRIORITY etc.
+
+
+========================================================================================================================
+	Java annotation
+========================================================================================================================
+- Java annotations are used to provide meta data for your Java code. Meta data is instructions helper for coding error.
+- Java annotations do not directly affect the execution of your code, although some types of annotations can actually be
+used for that purpose.
+- Java's annotations are optional and you can create your own annotation.
+- Example of annotation:
+	@Override tells the Java compiler to be on the lookout for a common coding error. The annotation says, “Make sure
+	that the method immediately following this annotation has the same stuff (the same name, the same parameters, and so
+	on) as one of the methods in the superclass. If not, then display an error message.”
+
+	@Deprecated is used to mark a class, method or field as deprecated, meaning it should no longer be used. If your
+	code uses deprecated classes, methods or fields, the compiler will give you a warning.
+
+	@SuppressWarnings tell Java not to remind you that your program contains certain questionable code (not to display
+	a warning in the consolde).
+
+
+========================================================================================================================
+	Java Exceptions
+========================================================================================================================
+- An exception (or exceptional event) is a problem that arises during the execution of a program.
+- When an Exception occurs the normal flow of the program is disrupted and the program/Application terminates abnormally,
+which is not recommended, therefore, these exceptions are to be handled.
+- An exception can occur for many different reasons. Following are some scenarios where an exception occurs:
+	1. A user has entered an invalid data.
+	2. A file that needs to be opened cannot be found.
+	3. A network connection has been lost in the middle of communications or the JVM has run out of memory.
+- Build-in Exception in Java:
+	1. Arithmetic Exception:  It is thrown when an exceptional condition has occurred in an arithmetic operation.
+	2. IOException:           It is thrown when an input-output operation failed or interrupted
+	3. InterruptedException:  It is thrown when a thread is waiting , sleeping , or doing some processing , and it is interrupted.
+	4. NoSuchFieldException:  It is thrown when a class does not contain the field (or variable) specified
+	5. NoSuchMethodException: It is thrown when accessing a method which is not found.
+	6. NullPointerException:  This exception is raised when referring to the members of a null object. Null represents nothing
+	7. NumberFormatException: This exception is raised when a method could not convert a string into a numeric format.
+	8. RuntimeException:      This represents any exception which occurs during runtime.
+	9. FileNotFoundException: This Exception is raised when a file is not accessible or does not open.
+	10. ClassNotFoundException:          This Exception is raised when we try to access a class whose definition is not found
+	11. StringIndexOutOfBoundsException: It is thrown by String class methods to indicate that an index is either negative than the size of the string
+	12. ArrayIndexOutOfBoundException:   It is thrown to indicate that an array has been accessed with an illegal index. The index is either negative or greater than or equal to the size of the array.
+- Create custom exception:
+	public class NewException() extends Exception {}
+- EX:
+	import java.io.File;
+	import java.io.IOException;
+	import java.util.Scanner;
+	public class Main {
+		public static void main(String args[]) {
+		Scanner scan1 = null;
+		Scanner scan2 = null;
+		try {
+			scan1 = new Scanner(new File("File1.txt"));
+			scan2 = new Scanner(new File("File2.txt"));
+			// Do useful stuff
+		} catch (IOException e) {					// Only execute when corespond exception is thrown
+			// Oops!
+		} finally {									// Finally is optional and codes insde alway execute
+			scan1.close();
+			scan2.close();
+			System.out.println("Done!");
+	} } }
+
+- How to Throw Exceptions:
+    if (size == 0) {
+        throw new EmptyStackException();
+    }
+========================================================================================================================
+
+========================================================================================================================

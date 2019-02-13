@@ -1,0 +1,117 @@
+Ref:
+	- https://www.tutorialspoint.com/jmeter/jmeter_overview.htm
+	- https://www.blazemeter.com/blog/what%E2%80%99s-the-max-number-of-users-you-can-test-on-jmeter
+	- https://www.guru99.com/jmeter-element-reference.html
+
+========================================================================================================================
+	Overview:
+========================================================================================================================
+- JMeter is a software that can perform load test, performance-oriented business (functional) test, regression test, etc.,
+on different protocols or technologies.
+- JMeter simulates a group of users sending requests to a target server, and returns statistics that show the performance
+or functionality of the target server/application via tables, graphs, etc.
+- The protocols supported by JMeter are:
+    . Web − HTTP, HTTPS sites 'web 1.0' web 2.0 (ajax, flex and flex-ws-amf)
+    . Web Services − SOAP / XML-RPC
+    . Database via JDBC drivers
+    . Directory − LDAP
+    . Messaging Oriented service via JMS
+    . Service − POP3, IMAP, SMTP
+    . FTP Service
+- Features of JMeter
+    . Being an open source software, it is freely available
+    . It has a simple and intuitive GUI
+    . JMeter can conduct load and performance test for many different server types − Web - HTTP, HTTPS, SOAP, Database
+    via JDBC, LDAP, JMS, Mail - POP3, etc
+    . It is a platform-independent tool. On Linux/Unix, JMeter can be invoked by clicking on JMeter shell script. On
+    Windows, it can be invoked by starting the jmeter.bat file
+    . It has full Swing and lightweight component support (precompiled JAR uses packages javax.swing.* )
+    . JMeter store its test plans in XML format. This means you can generate a test plan using a text editor.
+    . Its full multi-threading framework allows concurrent sampling by many threads and simultaneous sampling of
+    different functions by separate thread groups.
+    . It is highly extensible.
+    . It can also be used to perform automated and functional testing of the applications.
+
+- Download Jmeter, go to the bin directory. In this case, it is .../apache-jmeter-2.9/bin. Now click on the following:
+    Windows	    jmeter.bat
+    Linux	    jmeter.sh
+    Mac	        jmeter.sh
+
+- Meter has some limitations especially when it is run in a distributed environment. Following these guidelines will
+assist in creating a real and continuous load:
+    . Use multiple instances of JMeter in case, the number of threads are more
+    . Check the Scoping Rules and design accordingly
+    . Use naming conventions always for all elements
+    . Check the default browser Connectivity settings, before executing scripts
+    . Add Listeners appropriately
+
+- Here are some suggestion to reduce resource requirements:
+    . Use non-GUI mode: jmeter -n -t test.jmx -l test.jtl
+    . Use as few Listeners as possible; if using the -l flag as above, they can all be deleted or disabled
+    . Disable the “View Result Tree” listener as it consumes a lot of memory and can result in the console freezing or
+    JMeter running out of memory. It is safe to use the “View Result Tree” listener with only “Errors” checked
+    . Rather than using lots of similar samplers, use the same sampler in a loop, and use variables (CSV Data Set) to
+    vary the sample. Or perhaps use the Access Log Sampler
+    . Don't use functional mode
+    . Use CSV output rather than XML
+    . Only save the data that you need
+    . Use as few Assertions as possible
+    . Disable all JMeter graphs as they consume a lot of memory. You can view all of the real time graphs using the JTLs
+    tab in your web interface
+    . Don't forget to erase the local path from CSV Data Set Config if used
+    . Clean the Files tab prior to every test run.
+
+========================================================================================================================
+	jMeter Elements
+========================================================================================================================
+1. Thread Group:
+    - Thread Groups is a collection of Threads. Each thread represents one user using the application under test.
+    Basically each Thread simulates one real user request to the server. The controls for a thread group allow you to
+    Set the number of threads for each group. We can also control the following: ramp-up time and number of test iterations
+
+    - For example, if you set the number of threads as 100; JMeter will create and simulate 100 user requests to the
+    server under test.
+
+2. Samplers:
+    - Samplers allow JMeter to send specific types of requests to a server: HTTP, JBDC, FTP , ...
+    - They simulate a user request to the target server. EX, you can add a HTTP Request sampler if you need to perform a
+    POST, GET, or DELETE on a HTTP service
+
+3. Listeners:
+    - Listeners let you view the results of Samplers in the form of tables, graphs, trees, or simple text in some log
+    files. They provide visual access to the data gathered by JMeter about the test cases as a Sampler component of
+    JMeter is executed
+
+4. Configuration Elements:
+    - Configuration Elements allow you to create defaults and variables to be used by Samplers. They are used to add or
+    modify requests made by Samplers.
+    - They are executed at the start of the scope of which they are part, before any Samplers that are located in the same
+    scope. Therefore, a Configuration Element is accessed only from inside the branch where it is placed.
+
+5. Logic Controllers:
+    - Logic Controllers let you control the order of processing of Samplers in a Thread
+    - Logic controllers can change the order of a request coming from any of their child elements. Some examples are,
+    - ForEach Controller, While Controller, Loop Controller, IF Controller, Run Time Controller, Interleave Controller,
+    Throughput Controller, and Run Once Controller
+
+6. Test Fragments:
+    - Test Fragment is a special type of element placed at the same level as the Thread Group element.
+    - It is distinguished from a Thread Group in that it is not executed unless it is referenced by either a Module
+    Controller or an Include_Controller. This element is purely for code re-use within Test Plans.
+
+7. Timers
+    - By default, a JMeter thread sends requests without pausing between each sampler. This may not be what you want.
+    You can add a timer element which allows you to define a period to wait between each request.
+
+8. Assertions
+    - Assertions allow you to include some validation test on the response of your request made using a Sampler. Using
+    assertions you can prove that your application is returning the correct data. JMeter highlights when an assertion fails.
+
+9. Pre-processor Elements
+    - A pre-processor element is something that runs just before a sampler executes.
+    - They are often used to modify the settings of a Sample Request just before it runs, or to update variables that are
+    not extracted from response text.
+
+9. Post-processor Elements
+    - A post-processor executes after a sampler finishes its execution.
+    - This element is most used to process the response data, for example, to retrieve a particular value for later use

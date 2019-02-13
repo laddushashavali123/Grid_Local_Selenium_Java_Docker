@@ -1,0 +1,130 @@
+Ref:
+	- https://www.guru99.com/using-cucumber-selenium.html
+	- https://testingneeds.wordpress.com/2015/12/26/test-automation-with-cucumber-jvm/
+
+========================================================================================================================
+	Overview:
+========================================================================================================================
+Test types:
+    - Test Driven Development (TDD) — Tests are written before code and passing the tests is the critical driver of
+    development.
+
+    - Acceptance Test Driven Development (ATDD) — Team members with different perspectives (customer, business analyst,
+    tester, developer) collaborate and write acceptance tests in advance of implementing the corresponding functionality.
+
+    - Behavior Driven Development (BDD) — Tests are written in a non-technical language that everyone can understand (ex:
+    a domain-specific language like Gherkin). BDD combines the principles of TDD and ATDD and forms an approach for
+    building a shared understanding on what kind of software to build by discussing examples.
+
+Advantages of BDD: The biggest advantage of behavioral tests might be that they describe a set of functions that a user
+expects from a system in a very concrete and direct manner. The sum of these behaviors essentially document a contract
+with the user/client. If any of the tests fail, this contract is not upheld.
+
+Popular BDD Frameworks:
+    - Java: Cucumber, JBehave
+    - Ruby:Cucumber
+    - PHP: Behat
+    - JavaScript: cucumber.js, jasmine
+
+========================================================================================================================
+	Cucumber (BDD framework)
+========================================================================================================================
+- Cucumber is first and foremost a collaboration tool that aims to bring a common understanding to software teams — across
+roles. BDD tools like Cucumber are made to drive the entire life cycle of software implementation in more collaborative
+manner.
+- Cucumber features should drive the implementation, not reflect it. Cucumber is not a tool for testing software. It is
+a tool for testing people’s understanding of how software (yet to be written) should behave.
+
+1. Analyze the Feature
+    - Use Feature Mapping approach to effectively analyse and elaborate the product behavior:
+        a. Define a feature or story, or pick one from the backlog
+        b. Understand what actors are involved in the story
+        c. Break the feature into tasks to identify the main flows
+        d. Identify examples that illustrate a principle or variant flow (Ask questions like: “But what if…”; “what else
+        could lead to this outcome”; “what other outcomes might happen”; and use the answers to create new examples)
+        e. Create Executable Specifications: automate the main high-level flows with pending steps.
+    - Example:
+        a. Writing a high level features and scenarios in a business readable grammar
+        b. In this case, there is only one actor  -  the employee:
+            Feature 1: Login Profile
+              As an employee of the company
+              I want to login my employee profile using my credentials
+              In order to collaborate with my colleagues
+            Feature 2: Update Profile
+              As an employee of the company
+              I want to be able to update my name, projects, email, and phone numbers on my profile
+              In order to share my contact information with my colleagues
+        c. Break feature into tasks and scenarios:
+            Feature 1: Login Profile
+                Scenario: Successful login
+                Scenario: Failed login using wrong credentials
+            Feature 2: Update Profile
+                Scenario: Update name
+                Scenario: Add new projects
+        d. To execute scenarios, we need to establish the steps and rules involved in each scenario:
+            Feature 1:
+                Background: User navigates to Company home page
+                Steps: 1) Go to company home page
+                       2) See login option (this is a consequence of above step)
+
+                Scenario: Successful login
+                Steps: 1) Enter correct credentials
+                       2) Login to account
+                       3) See welcome message (this is a consequence of above step)
+                Scenario: Failed login using wrong credentials
+                Steps: 1) Enter incorrect credentials
+                       2) Login to account
+                       3) See error message (this is a consequence of above step)
+        e. Convert above story-like scenarios to executable steps in Given/When/Then format of Gherkin language:
+            Feature 1:
+                Background: User navigates to Company home page
+                  Given I am on the "Company home" page on URL "www.mycomany.com"
+                  Then I should see "Log In as Employee" message
+
+                Scenario: Successful login
+                  When I fill in "Username" with "Test"
+                  And I fill in "Password" with "123"
+                  And I click on the "Log In" button
+                  Then I am on the "My profile" page on URL "www.mycompany.com/myprofile"
+                  And I should see "Welcome to your profile" message
+                  And I should see the "Log out" button
+
+2. Create Step Definitions for Cucumber
+    - Cucumber doesn't know how to execute your scenarios out-of-the-box. It needs Step Definitions to translate plain
+    text Gherkin steps into actions that will interact with the system.
+
+    - When Cucumber executes a Step in a Scenario it will look for a matching Step Definition to execute.
+
+    - A Step Definition is a small piece of code with a pattern attached to it. The pattern is used to link the step
+    definition to all the matching Steps, and the code is what Cucumber will execute when it sees a Gherkin Step.
+
+    - To understand how Step Definitions work, consider the following Scenario:
+        Scenario: Some cukes
+          Given I have 20 pieces of candy
+    "I have 20 pieces of candy" statement of the step (the text following the Given keyword) will match the Step
+    Definition below in JAVA:
+        @Given("I have (\\+d) pieces of candy"
+        public void I_have_pieces_of_candy(int pieceNumber){    // pieceNumber = 20
+            System.out.println("I have " + pieceNumber + "pieces of candy"
+        }
+
+    - Cucumber does not differentiate between the five step keywords Given, When, Then, And and But.
+
+3. Hook annotation (it same as before annotation of testNG)
+
+
+========================================================================================================================
+    Cucumber with Selenium and TestNG
+========================================================================================================================
+- Search and install "Cucumber for Java" plugin on File > Settings > Plugins for IntelliJ
+- Cucumber package structure:
+    cucumber
+        features    (contains Gherkin feature file)
+        steps       (contain mapping actual code with steps on feature file)
+        runner      (use to run cucumber with testNG)
+- Step:
+    1. Write Gherkin feature file
+    2. Write steps file which extend our base class which map which step in feature file
+    3. Using @CucumberOptions() annotation to map step in steps file and Gherkin feature file in test runner class:
+        @CucumberOptions() annotation: is used to set some properties for our cucumber test like feature file, step
+        definition, etc.

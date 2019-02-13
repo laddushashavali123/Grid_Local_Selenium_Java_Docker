@@ -1,0 +1,126 @@
+Reference:
+    1. https://stackify.com/log4j2-java/
+    2. https://logging.apache.org/log4j/2.x/manual/configuration.html
+    3. http://testng.org/doc/documentation-main.html#logging
+    4. https://examples.javacodegeeks.com/enterprise-java/maven/logback-maven-example/
+
+------------------------------------------------------------------------------------------------------------------------
+The log file keeps track of the record, event or info when any event happens or any software run so we can track or debug
+our script easily if anything goes wrong in the script. A log file can be as simple text or HTML format file.
+
+
+In this framework, we use LogBack:
+    - By default, any files placed in src/test[or main]/resources are automatically included in the classpath during
+    execution of any tests.
+
+    - Configuration: https://logback.qos.ch/manual/configuration.html
+    <configuration>
+        <!-- Write log to console -->
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <!-- Define a format for log display -->
+            <layout>
+                <Pattern>%d %-5level %mdc %logger{35} - %msg%n</Pattern>
+            </layout>
+        </appender>
+
+        <!-- Write log to a single file -->
+        <timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss"/>
+        <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+            <!-- Define location for saving log file -->
+            <file>target/logs/log-${bySecond}.log</file>
+            <append>true</append>
+            <!-- set immediateFlush to false for much higher logging throughput -->
+            <immediateFlush>true</immediateFlush>
+            <!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+            <!-- Define a format for log display -->
+            <encoder>
+                <pattern>%d %-5level %mdc %logger{35} - %msg%n</pattern>
+            </encoder>
+        </appender>
+
+        <!-- Write log to a multiple files -->
+        <appender name="SIFT" class="ch.qos.logback.classic.sift.SiftingAppender">
+            <!-- in the absence of the class attribute, it is assumed that the desired discriminator type is ch.qos.logback.classic.sift.MDCBasedDiscriminator -->
+            <discriminator>
+                <key>testname</key>
+                <defaultValue>Test</defaultValue>
+            </discriminator>
+            <sift>
+                <appender name="log-${testname}" class="ch.qos.logback.core.FileAppender">
+                    <file>target/logs/${testname}.log</file>
+                    <append>false</append>
+                    <layout class="ch.qos.logback.classic.PatternLayout">
+                        <pattern>%d [%thread] %-5level %mdc %logger{35} - %msg%n</pattern>
+                    </layout>
+                </appender>
+            </sift>
+        </appender>
+
+        <!-- Select which appender is used -->
+        <root level="DEBUG">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="SIFT" />
+        </root>
+    </configuration>
+
+
+------------------------------------------------------------------------------------------------------------------------
+Extent Report TestNG:
+    - If you need to log messages that should appear in the generated HTML reports, you can use the class org.testng.Reporter
+    - Syntax: Reporter.log("String", boolean);
+        + If boolean value set to true then values will come on console and HTML report as well.
+        + If boolean value set to false then values will come on HTML report only.
+
+
+------------------------------------------------------------------------------------------------------------------------
++ Note:
+    - If log4j2 does not automatic download from maven repo, Go to Maven Projects then right click on Dependency and
+    download the source manually.
+    - After that, run the command: "mvn compile" to download and compile the related part of the dependency.
+
+------------------------------------------------------------------------------------------------------------------------
+Logging with log4j2:
+    - Log4j is free open source tool given by Apache foundation for creating log files It helps us to generate a log file in various output target.
+    - LoggerContext
+    - Configuration of Log4j 2 can be accomplished in 1 of 4 ways:
+        . Through a configuration file written in XML, JSON, YAML, or properties format.
+        . Programmatically, by creating a ConfigurationFactory and Configuration implementation.
+        . Programmatically, by calling the APIs exposed in the Configuration interface to add components to the default configuration.
+        . Programmatically, by calling methods on the internal Logger class.
+
+    - Automatic Configuration: By default, any files placed in src/test/resources are automatically included in the classpath during execution of any tests.
+    When Log4j starts, it will locate all the ConfigurationFactory plugins and arrange them in weighted order from highest to lowest:
+        . Log4j will inspect the "log4j.configurationFile" system property and, if set, will attempt to load the configuration using the ConfigurationFactory that matches the file extension.
+        . If no system property is set the properties ConfigurationFactory will look for log4j2-test.properties in the classpath.
+        . If no such file is found the YAML ConfigurationFactory will look for log4j2-test.yaml or log4j2-test.yml in the classpath.
+        . If no such file is found the JSON ConfigurationFactory will look for log4j2-test.json or log4j2-test.jsn in the classpath.
+        . If no such file is found the XML ConfigurationFactory will look for log4j2-test.xml in the classpath.
+        . If a test file cannot be located the properties ConfigurationFactory will look for log4j2.properties on the classpath.
+        . If a properties file cannot be located the YAML ConfigurationFactory will look for log4j2.yaml or log4j2.yml on the classpath.
+        . If a YAML file cannot be located the JSON ConfigurationFactory will look for log4j2.json or log4j2.jsn on the classpath.
+        . If a JSON file cannot be located the XML ConfigurationFactory will try to locate log4j2.xml on the classpath.
+        . If no configuration file could be located the DefaultConfiguration will be used. This will cause logging output to go to the console.
+
+    - Controlled Configuration path with Maven System Properties:
+        . Include this property into POM file
+            <plugins>
+                <plugin>
+                    <configuration>
+                        <systemPropertyVariables>
+                            <log4j.configurationFile></log4j.configurationFile>
+                        </systemPropertyVariables>
+                    <configuration>
+                <plugins>
+            <plugin>
+
+    - Appenders: is basically responsible for sending log messages to a certain output destination. Here are some of the most useful types of appenders that the library provides:
+        . ConsoleAppender     – logs messages to the System console
+        . FileAppender        – writes log messages to a file
+        . RollingFileAppender – writes the messages to a rolling log file
+        . JDBCAppender        – uses a relational database for logs
+        . AsyncAppender       – contains a list of other appenders and determines the logs for these to be written in a separate thread
+
+    - Layouts: are used by appenders to define how a log message will be formatted. Some of the more commonly used layouts that log4j2 offers:
+        . PatternLayout – configures messages according to a String pattern
+        . JsonLayout – defines a JSON format for log messages
+        . CsvLayout – can be used to create messages in a CSV format

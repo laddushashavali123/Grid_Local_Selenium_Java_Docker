@@ -1,0 +1,33 @@
+Ref:
+    -
+
+------------------------------------------------------------------------------------------------------------------------
+    Create database
+------------------------------------------------------------------------------------------------------------------------
+1. Create new database:
+    - Syntax:
+        CREATE DATABASE [database_name];
+
+2. Select database:
+    - Syntax:
+        USE [database_name];
+
+3. Create table:
+   - Syntax:
+        CREATE TABLE table_name (column_name column_type,
+            column_name column_type
+            ....
+            );
+   - EX: create table tutorials_tbl(
+          tutorial_id INT NOT NULL AUTO_INCREMENT,
+          tutorial_title VARCHAR(100) NOT NULL,
+          tutorial_author VARCHAR(40) NOT NULL,
+          PRIMARY KEY ( tutorial_id )
+       );
+
+4. Create Entry:
+    - Specific column with specific value:
+        INSERT INTO table_name (column1, column2, column3, ...) VALUES (value1, value2, value3, ...);
+    - Value must be correct order of the column in table:
+        INSERT INTO table_name VALUES (value1, value2, value3, ...);
+    - Ex: INSERT INTO tutorials_tbl VALUES (1, Book 1, Kevin);

@@ -1,0 +1,74 @@
+Reference:
+	- http://elementalselenium.com/tips/52-grid
+	- https://groups.google.com/forum/#!topic/webdriver/4h7YWWOQ60M
+	- https://stackoverflow.com/questions/8837875/setting-remote-webdriver-to-run-tests-in-a-remote-computer-using-java
+
+Selenium:
+	- Selenium API is designed to be a browser automation tool.
+	- All browser-specifc driver implementations are extensions of the core RemoteWebDriver class. The implementation
+	method differs from driver to driver. Some use the client mode, and some use the server mode.
+	- Client mode is where the RemoteWebDriver implementation is either loaded as a browser plugin, or natively supported
+	by the browser. The language bindings connect directly to the remote instance and tell it what to do. An example of
+	this implementation method would be FirefoxDriver.
+	- The server mode is where the language binding sets up a server, which acts as a go-between for the language binding
+	and the browser. It  translates the commands sent by your code into something that the browser can understand. An
+	example of this implementation method would be ChromeDriver.
+	
+Example:
+	public class SeleniumLocal {
+		DesiredCapabilities capabilities = null;
+		capabilities = DesiredCapabilities.firefox();
+		Webdriver driver = new FirefoxDriver(capabilities);
+		driver.get("google.com");
+	}
+	
+	public class SeleniumRemote {
+		DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+		capabilities.setPlatform(Platform.valueOf(desiredPlatform));
+		capabilities.setBrowserName(desiredBrowserVersion);
+		Webdriver driver = new RemoteWebDriver(seleniumGridURL, capabilities);
+		driver.get("google.com");
+	}
+	
+Saunce Lab:
+	User/Pass: kieuanhdung90@gmail.com/dung771990
+	Access Key: f99b9073-0d66-4dba-8bfd-1addd697628b 
+	
+Selenium Grid:
+	- Using a Selenium grid allows you to save time by spreading your test across multiple machines.
+	- Hub: is the main command center for managing which machines your selenium test will run on. This is where you can
+	see a list of all the available nodes currently running in your grid environment. When you run a Selenium test and
+	pass it some remote web driver desired capabilities parameters, it goes to the hub and finds an available node that
+	matches the criteria. Once it finds a machine that matches, say, a browser version you want to run against, the hub
+	reroutes your script to the desired node.
+	- Node is a machine that you register with your hub. By registering with the hub, the hub now knows about the node
+	and any configuration information you used when you registered the node.
+	  
+	- Set up the hub:
+		1. Install Java JDK version. 
+		2. Download Selenium Standalone server at http://docs.seleniumhq.org/download/
+		3. Enter the command on cmd to start a hub, port parameter is optional (default is 4444):  
+			$ java -jar selenium-server-standalone-3.6.0.jar -role hub
+		4. Verify hub is configured, go to below site and it should show Selenium Grid Hub v.x.x :
+			http://localhost:4444
+
+	- Set up node machine:
+		1. Install Java JDK version.
+		2. Install required driver (Chromedriver, geckodriver,...) and the browsers
+		   For macOS: http://www.kenst.com/2015/03/installing-chromedriver-on-mac-osx/
+		   Safari on macOS: enable the Develop menu in Safari�s Advanced preferences, then in that menu select "Allow
+		   Remote Operation
+		3. Add the driver folder to OS PATH.
+		4. Get the hub register link when setup hub in console log.
+		5. Register node to hub: 
+			  $ java -jar selenium-server-standalone-x.x.x.jar -role node -hub http://[Hub_Machine_IP_Address]:[Hub_Port]/grid/register -port 5555
+			  EX: java -jar selenium-server-standalone-3.6.0.jar -role node -hub http://192.168.1.103:4444/grid/register
+			  (default is 5 instances of chrome browser, 5 instances of firefox browser and 1 instance of IE, port is optional)
+		   Register node to hub with specific browser:
+			  EX: java -jar selenium-server-standalone-3.6.0.jar -role node -hub http://192.168.1.103:4444/grid/register -browser "browserName=chrome, version=ANY, maxInstances=10, platform=WINDOWS" -browser "browserName=firefox, maxInstances=10, platform=ANY, seleniumProtocol=WebDriver"
+			  (It will setup 10 instances for firefox and chrome)
+			  java -Dwebdriver.chrome.driver=C:\Selenium\chromedriver.exe -Dwebdriver.gecko.driver=C:\Selenium\geckodriver.exe -Dwebdriver.edge.driver=C:\Selenium\MicrosoftWebDriver.exe -jar selenium-server-standalone-3.6.0.jar -role node -hub http://192.168.1.103:4444/grid/register -browser browserName=safari,platform=MAC
+			  (For macOS device)
+
+			
+			

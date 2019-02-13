@@ -1,0 +1,51 @@
+Ref:
+    1. https://www.javatpoint.com/what-is-web-service
+
+========================================================================================================================
+    Overview
+========================================================================================================================
+• A Web Service is can be defined by following ways:
+    - is a client server application or application component for communication.
+    - method of communication between two devices over network.
+    - is a software system for interoperable machine to machine communication.
+    - is a collection of standards or protocols for exchanging information between two devices or application.
+
+• EX: As you can see java, .net, PHP, python system/app can communicate with others through web service over the network
+    Java system <-----> Web Service <-----> .Net system
+    PHP system  <-----------^-------------> Python system
+
+• Types of Web Services:
+    - SOAP
+    - RESTful
+
+
+========================================================================================================================
+    SOAP Web Services
+========================================================================================================================
+• SOAP stands for Simple Object Access Protocol. It is a XML-based protocol for accessing web services.
+
+• SOAP is platform independent and language independent. By using SOAP, you will be able to interact with other programming
+language applications.
+
+• Advantages of Soap Web Services:
+    - SOAP defines its own security known as WS Security.
+    - SOAP web services can be written in any programming language and executed in any platform.
+
+• Disadvantages of Soap Web Services:
+    - SOAP uses XML format that must be parsed to be read. It defines many standards that must be followed while developing
+    the SOAP applications. So it is slow and consumes more bandwidth and resource.
+
+========================================================================================================================
+    RESTful Web Services
+========================================================================================================================
+• RESTful Web Services is Web Services which is created based on REST (REpresentational State Transfer)
+
+• REST is an architectural style (not a protocol) that specifies constraints:
+    - Resource identification through URI (Uniform Resource Identifiers): data and functionality are considered resources,
+    and are accessed using URIs, typically links on the Web.
+    - Uniform interface (Sử dụng các phương thức HTTP một cách rõ ràng): Resources are manipulated using a fixed set of
+    four create, read, update, delete operations: POST, GET, PUT, and DELETE
+    • Self-descriptive messages:  Resources are decoupled from their representation so that their content can be accessed
+    in a variety of formats, such as HTML, XML, plain text, PDF, JPEG, JSON, and others.
+    • Every interaction with a resource is stateless; that is, server does not cache the client request and it does not
+    work with Session.

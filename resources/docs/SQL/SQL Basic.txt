@@ -1,0 +1,306 @@
+ ----------------------------------------------------------------------------------------------------------------------
+|	Fundamental
+ ----------------------------------------------------------------------------------------------------------------------
+- SQL stands for Structured Query Language, it is a standard language for storing, manipulating and retrieving data in
+databases.
+- Well known SQL system are MySQL, SQL Server, MS Access, Oracle, Sybase, Informix, Postgres, and other database systems.
+- A database most often contains one or more tables. Each table is identified by a name (e.g. "Customers" or "Orders").
+Tables contain records (rows) with data.
+
+ ----------------------------------------------------------------------------------------------------------------------
+|   SQL Statement
+ ----------------------------------------------------------------------------------------------------------------------
+- SELECT:
+    . The SELECT statement is used to select data from a database
+	. The data returned is stored in a result table, called the result-set
+	. Syntax:
+		SELECT column1, column2, ... FROM table_name;			-- If you want specific column name
+		SELECT * FROM table_name;								-- If you want all column
+
+- SELECT DISTINCT:
+	. The SELECT DISTINCT statement is used to return only distinct (different) values
+	. Inside a table, a column often contains many duplicate values; and sometimes you only want to list the different (distinct) values
+	. Syntax:
+		SELECT DISTINCT column1, column2, ... FROM table_name;
+
+- SELECT TOP Clause:
+	. The SELECT TOP clause is used to specify the number of records to return
+	. The SELECT TOP clause is useful on large tables with thousands of records. Returning a large number of records can impact on performance.
+	. Syntax:
+		SELECT column_name(s) FROM table_name WHERE condition LIMIT number;				-- MySQL syntax
+		SELECT TOP number|percent column_name(s) FROM table_name WHERE condition;		-- Microsoft SQL Server syntax
+		SELECT column_name(s) FROM table_name WHERE ROWNUM <= number;					-- Oracle syntax
+
+- WHERE Clause:
+	. The WHERE clause is used to filter records
+	. Syntax:
+		SELECT column1, column2, ... FROM table_name WHERE condition;
+
+- AND, OR and NOT Operators:
+	. The WHERE clause can be combined with AND, OR, and NOT operators.
+	. The AND and OR operators are used to filter records based on more than one condition
+	. The NOT operator displays a record if the condition(s) is NOT TRUE
+	. Syntax:
+		SELECT column1, column2, ... FROM table_name WHERE condition1 AND condition2 AND condition3 ...;
+		SELECT column1, column2, ... FROM table_name WHERE condition1 OR condition2 OR condition3 ...;
+		SELECT column1, column2, ... FROM table_name WHERE NOT condition;
+
+- IN Operator:
+	. The IN operator allows you to specify multiple values in a WHERE clause
+	. The IN operator is a shorthand for multiple OR conditions
+	. Syntax:
+		SELECT column_name(s) FROM table_name WHERE column_name IN (value1, value2, ...);
+		// or you can use another SELECT inside
+		SELECT column_name(s) FROM table_name WHERE column_name IN (SELECT STATEMENT);
+
+- BETWEEN Operator:
+	. The BETWEEN operator selects values within a given range. The values can be numbers, text, or dates
+	. The BETWEEN operator is inclusive: begin and end values are included
+	. Syntax:
+		SELECT column_name(s) FROM table_name WHERE column_name BETWEEN value1 AND value2;
+
+- ORDER BY Keyword:
+	. The ORDER BY keyword is used to sort the result-set in ascending or descending order.
+	. The ORDER BY keyword sorts the records in ascending order by default
+	. Syntax:
+		SELECT column1, column2, ... FROM table_name ORDER BY column1, column2, ... ASC|DESC;
+
+- NULL Value:
+	. A field with a NULL value is a field with no value. A field with a NULL value is one that has been left blank during record creation!
+	. If a field in a table is optional, it is possible to insert a new record or update a record without adding a value to this field. Then, the field will be saved with a NULL value
+	. It is not possible to test for NULL values with comparison operators, we will have to use the IS NULL and IS NOT NULL operators instead
+	. IS NULL Syntax:
+		SELECT column_names FROM table_name WHERE column_name IS NULL;
+	. IS NOT NULL Syntax:
+		SELECT column_names FROM table_name WHERE column_name IS NOT NULL;
+
+- INSERT INTO Statement:
+	. The INSERT INTO statement is used to insert new records in a table
+	. Syntax:
+		INSERT INTO table_name (column1, column2, column3, ...) VALUES (value1, value2, value3, ...);
+
+		// If you are adding values for all the columns of the table, you do not need to specify the column names
+		// However, make sure the order of the values is in the same order as the columns in the table
+		INSERT INTO table_name VALUES (value1, value2, value3, ...);
+
+- UPDATE Statement:
+	. The UPDATE statement is used to modify the existing records in a table
+	. Syntax:
+		UPDATE table_name SET column1 = value1, column2 = value2, ... WHERE condition;
+
+- DELETE Statement:
+	. The DELETE statement is used to delete existing records in a table
+	. Syntax:
+		DELETE FROM table_name WHERE condition;
+
+- MIN() and MAX() Functions:
+	. The MIN() function returns the smallest value of the selected column
+		SELECT MIN(column_name) FROM table_name WHERE condition;
+	. The MAX() function returns the largest value of the selected column
+		SELECT MAX(column_name) FROM table_name WHERE condition;
+
+- COUNT(), AVG() and SUM() Functions:
+	. The COUNT() function returns the number of rows that matches a specified criteria
+		SELECT COUNT(column_name) FROM table_name WHERE condition;
+	. The AVG() function returns the average value of a numeric column.
+		SELECT AVG(column_name) FROM table_name WHERE condition;
+	. The SUM() function returns the total sum of a numeric column
+		SELECT SUM(column_name) FROM table_name WHERE condition;
+
+- LIKE Operator:
+	. The LIKE operator is used in a WHERE clause to search for a specified pattern in a column
+	. There are two wildcards used in conjunction with the LIKE operator:
+			% - The percent sign represents zero, one, or multiple characters
+			_ - The underscore represents a single character
+	.Syntax:
+		SELECT column1, column2, ... FROM table_name WHERE columnN LIKE pattern;
+	. Here are some examples showing different LIKE operators with '%' and '_' wildcards:
+		WHERE CustomerName LIKE 'a%'		Finds any values that starts with "a"
+		WHERE CustomerName LIKE '%a'		Finds any values that ends with "a"
+		WHERE CustomerName LIKE '%or%'		Finds any values that have "or" in any position
+		WHERE CustomerName LIKE '_r%'		Finds any values that have "r" in the second position
+		WHERE CustomerName LIKE 'a_%_%'		Finds any values that starts with "a" and are at least 3 characters in length
+		WHERE ContactName LIKE 'a%o'		Finds any values that starts with "a" and ends with "o"
+
+- Aliases:
+	. Aliases are used to give a table, or a column in a table, a temporary name
+	. An alias only exists for the duration of the query
+	. Syntax:
+		SELECT column_name AS alias_name FROM table_name AS alias_table_name;
+
+- GROUP BY Statement:
+	. The GROUP BY statement is often used with aggregate functions (COUNT, MAX, MIN, SUM, AVG) to group the result-set
+	by one or more columns
+	. Syntax:
+		SELECT COUNT(column_name) FROM table_name WHERE condition GROUP BY column_name(s) ORDER BY column_name(s);
+
+- HAVING Clause:
+	. The HAVING clause was added to SQL because the WHERE keyword could not be used with aggregate functions
+		SELECT COUNT(column_name) FROM table_name WHERE condition GROUP BY column_name(s) HAVING condition ORDER BY column_name(s);
+
+ ----------------------------------------------------------------------------------------------------------------------
+|	Database Relationship
+ ----------------------------------------------------------------------------------------------------------------------
+- Database relationships is the association between two columns in one or more tables.
+- Relationships are defined on the basis of matching key columns.
+- In SQL server, these relationships are defined using Primary Key-Foreign Key constraints
+- A link is created between two tables where the primary key of one table is associated with the foreign key of another
+table using database relationships.
+- Types of Relationships:
+    1. One To One:
+		- Relationship between two tables where one record in a table is associated with one and only one record in
+		another table.
+		- For example, in a school database, each student has only one student ID, and each student ID is assigned to
+		only one person:
+			Table Student
+				Student_Id		First name		Last name		Email
+				1				Dung			Kieu			dungdeptrai@true.com
+			Table Contact Info
+				Student_Id		City		Phone
+				1				Tay Ninh	123456789
+			. The key field in each table, Student ID, is designed to contain unique values.
+			. In the Students table, the Student ID field is the primary key.
+			. In the Contact Info table, the Student ID field is a foreign key.
+			. If we insert new contact info for the same Student_Id which already exists in Contact Info table, we get
+			an error of Unique key violation.
+
+	2. One To Many
+		- Relationship between two tables where one record in a table can be associated with one or more records in
+		another table.
+		- For example, each customer can have many sales orders:
+			Table Customer
+				Customer_id		First_name	Last_name	Email
+				1				Dung		Kieu		dungdeptrai@true.com
+			Table Order
+				Customer_id		Order_ID
+				1				A1
+				1				B1
+			. Customer_id in the Customers table is primary key and unique value.
+			. Customer_id in the Order table allows multiple instances of the same value.
+			. This relationship returns related records when the value in the Customer ID field in the Orders table is
+			the same as the value in the Customer ID field in the Customers table.
+
+	3. Many To Many
+		- Relationship between two tables where multiple records in a table are associated with multiple records in
+		another table.
+		- Relational database systems usually don't allow you to implement a direct many-to-many relationship between
+		two tables. For implementation, many-to-many relationship is broken into two one-to-many relationships by using
+		a third table, called a join table.
+		- Each record in a join table includes a match field that contains the value of the primary keys of the two
+		tables it joins. (In the join table, these match fields are foreign keys.) These foreign key fields are populated
+		with data as records in the join table are created from either table it joins.
+		- For example, a student can register for many classes, and a class can include many student:
+			Table Student
+				Student_Id	First name	Last name	Email
+				1			Dung		Kieu		dungdeptrai@true.com
+				2			Duong		Kieu		duong@true.com
+			Table Classes
+				Class_Id	Title		Description
+				1			Math		Dai So
+				2			English		English
+			Table Enrollments
+				Enrollment_Id		Student_Id		Class_Id	Date
+				1					1				1
+				2					1				2
+				3					2				1
+			. The primary key Student ID uniquely identifies each student in the Students table.
+			. The primary key Class ID uniquely identifies each class in the Classes table.
+			. The Enrollments table (JOIN table) contains the foreign keys Student ID and Class ID.
+			. Join tables can access fields and data across tables without having to create a separate relationship.
+
+ ----------------------------------------------------------------------------------------------------------------------
+|	JOIN query: retrieve data from a database that has relationships
+ ----------------------------------------------------------------------------------------------------------------------
+ - For One to Many relationship (2 tables), we can use JOIN 1 time:
+		SELECT * FROM `posts` INNER JOIN post_tag ON posts.id = post_tag.post_id WHERE posts.id = 2
+ - For Many to Many relationship (3 tables), we can use JOIN query 2 times:
+		SELECT * FROM `posts` INNER JOIN post_tag ON posts.id = post_tag.post_id INNER JOIN tags ON post_tag.tag_id = tags.id WHERE posts.id = 2
+
+	0. Reference:
+		- https://code.tutsplus.com/articles/sql-for-beginners-part-3-database-relationships--net-8561
+
+	1. Cross Joins
+		- This is the default type of JOIN query when no condition is specified.
+		- The result is a so called "Cartesian product" of the tables, each row from the first table is matched with
+		each row of the second table.
+		- If each table had 4 rows, we ended up getting a result of 16 rows, so this kind of result is usually not useful.
+		- Syntax:
+			SELECT * FROM TABLE [TABLE_NAME_1] JOIN [TABLE_NAME_2]
+			or SELECT * FROM TABLE [TABLE_NAME_1] , [TABLE_NAME_2]
+
+	2. Natural Joins
+		- The two tables need to have a matching column name.
+		- The records in join table only displays when the value is matching on two tables.
+		- The matching column (common column) displays only once in join table.
+		- Syntax:
+			SELECT * FROM TABLE [TABLE_NAME_1] NATURAL JOIN [TABLE_NAME_2]
+
+	3. Inner Joins
+		- When a join condition is specified, an Inner Join is performed.
+		- The results should be similar to the Natural Join. But the matching column displays twice.
+		- Syntax:
+			SELECT * FROM TABLE [TABLE_NAME_1] JOIN [TABLE_NAME_2] WHERE [TABLE_NAME_1].[collum_name] = [TABLE_NAME_2].[collum_name]
+			SELECT * FROM TABLE [TABLE_NAME_1] JOIN [TABLE_NAME_2] WHERE [TABLE_NAME_1].[collum_name] = [TABLE_NAME_2].[collum_name] AND [condition]
+			// ON clause put the JOIN conditions in a separate clause.
+			SELECT * FROM TABLE [TABLE_NAME_1] JOIN [TABLE_NAME_2] ON [TABLE_NAME_1].[collum_name] = [TABLE_NAME_2].[collum_name] WHERE [condition]
+			// USING clause is similar to the ON clause, but it's shorter. If a column is the same name on both tables, we can use this
+			// The result of USING clause is like NATURAL JOIN, so the join column does not display twice
+			SELECT * FROM TABLE [TABLE_NAME_1] JOIN [TABLE_NAME_2] USING [collum_name] WHERE [condition]
+
+	4. Left (Outer) Joins
+		- A LEFT JOIN is a type of Outer Join.
+		- If there is no match found from the second table, the record from the first table is still displayed as NULL.
+		- This is also useful for finding records that do not have relationships.
+		- Syntax:
+			// OUTER keyword is optional
+			SELECT * FROM TABLE [TABLE_NAME_1] LEFT OUTER JOIN [TABLE_NAME_2] USING [collum_name]
+			// IF query has where condition, NULL records does not display
+			SELECT * FROM TABLE [TABLE_NAME_1] LEFT OUTER JOIN [TABLE_NAME_2] USING [collum_name] WHERE [condition]
+			// To display NULL record uses ON clause
+			SELECT * FROM TABLE [TABLE_NAME_1] LEFT OUTER JOIN [TABLE_NAME_2] ON ([TABLE_NAME_1].[collum_name] = [TABLE_NAME_2].[collum_name] AND [condition]
+
+	5. Right (Outer) Joins
+		- Same as Left Joins but the order of the tables are reversed.
+
+ ----------------------------------------------------------------------------------------------------------------------
+|   Test exercise with myblog database
+ ----------------------------------------------------------------------------------------------------------------------
+  1. SELECT:
+	- Show all column in table posts:
+	    SELECT * FROM posts
+	- Show id, title and body when slug equals post1
+	    SELECT id, title, body, slug FROM posts WHERE slug="post1"
+	- Show all column in table post when slug starts with post
+        SELECT * FROM posts WHERE slug LIKE "post%"
+	- Show all column in table post when slug end with 2
+        SELECT * FROM posts WHERE slug LIKE "%2"
+	- Show all column in table post when id is between 1 to 4
+        SELECT * FROM posts WHERE id IN (1,4)
+	- Show all column in table post when when slug equals post1 and post2
+        SELECT * FROM posts WHERE slug="post1" OR slug="post2"
+
+  2. SELECT within SELECT
+	- List all post which has category id bigger than category id of post id 1
+	    SELECT * FROM posts WHERE category_id > (SELECT category_id FROM posts WHERE id="1")
+
+  3. Aggregate function:
+	- Show the total post which has category_id is 1
+	    SELECT COUNT(id) AS TotalPost FROM posts WHERE category_id="1"
+	- Show the Maximun of category_id
+	    SELECT MAX(category_id) AS MaxCategoryID FROM posts
+	- Show the total post for each category_id
+	    SELECT category_id,COUNT(id) AS MaxPost FROM posts GROUP BY category_id ORDER BY category_id ASC
+	    SELECT category_id,COUNT(id) AS MaxPost FROM posts GROUP BY category_id ORDER BY category_id DESC
+	- Show the total post for each category_id when it is bigger than 1
+	    SELECT category_id, COUNT(id) AS TotalPost FROM posts GROUP BY category_id HAVING category_id>1
+
+  4. JOIN table:
+	- Show JOIN table comment body for each post
+	    // Only show post which has comment
+        SELECT * FROM posts JOIN comments ON (posts.id = comments.post_id)
+        // Show all record of left table if there no data for right table, it displays as NULL
+        SELECT * FROM posts LEFT JOIN comments ON (posts.id = comments.post_id)
+        // Show all record of right table if there no data for left table, it displays as NULL
+        SELECT * FROM posts LEFT JOIN comments ON (posts.id = comments.post_id)
+    - Show total comment for each post:
+        SELECT posts.id, posts.title, a.TotalComment FROM posts JOIN (SELECT comments.post_id, COUNT(comments.id) as TotalComment FROM comments GROUP BY comments.post_id) AS a ON (posts.id = a.post_id)

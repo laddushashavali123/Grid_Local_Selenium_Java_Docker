@@ -1,0 +1,8 @@
+
+Maven Test Runner:
+	1. The Failsafe Plugin is designed to run integration tests
+	2. The Surefire Plugin is designed to run unit tests.
+	3. Both of them can run with TestNG or JUnit test framework
+	4. Default wildcard pattern:
+		- Surefire: **/Test*.java, **/*Test.java, **/*TestCase.java
+		- Failed-safe: **/IT*.java, **/*IT.java, **/*ITCase.java

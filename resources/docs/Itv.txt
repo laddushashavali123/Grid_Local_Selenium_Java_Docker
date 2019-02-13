@@ -1,0 +1,297 @@
+Ref:
+    1. https://www.guru99.com/top-100-selenium-interview-questions-answers.html
+    2.
+
+========================================================================================================================
+    Selenium
+========================================================================================================================
+	• What is Selenium? What are the different Selenium components?
+		- Selenium is one of the most popular automated testing suites (free and open source). It is designed to do
+		automation testing with web-based application.
+		- Selenium includes following components:
+		    . Selenium WebDriver: uses to communicate with browser
+		    . Selenium Grid: uses to distribute the test on multiple platform
+
+    • What type of tests have you automated?
+        - Our main focus is to automate test cases to do Regression testing, Smoke testing, and Sanity testing.
+
+    • How many test cases you have automated per day?
+        - It depends on Test case scenario complexity and length. Sometimes just 1 or fewer test scenarios in a day when
+        the complexity is high.
+
+    •  What are the different types of automation frameworks?
+        - Data Driven Testing Framework (can use DataProvider/Parameter of TestNG for this): the test data is separated
+        and kept outside the Test Scripts, while Test Case logic resides in Test Scripts. Test data is read from the
+        external files (Excel Files) and are loaded into the variables inside the Test Script. Variables are used for
+        both for input values and for verification values.
+
+        - Keyword Driven Testing Framework: is an extension to Data-driven Testing Framework in a sense that it not only
+        segregates the test data from the scripts, it also keeps the certain set of code belonging to the test script
+        into an external data file.
+
+        - Behavior Driven Development Framework: (Cucumber) Behavior Driven Development framework allows automation of
+        functional validations in easily readable and understandable
+
+        - Hybrid Testing Framework: Hybrid Testing Framework is a combination of more than one above mentioned frameworks.
+
+	• Do you know about Locator techniques in selenium? And Can you list them out?
+	    - Types of locator in Selenium: ID, Name/Class Name, Name Tag, Link Text, By PartialLinkText, CSS Selector,
+			XPath.
+
+	• Explain what is assertion in Selenium and what are the types of assertion?
+	    - Assertion is used as a  verification point. It verifies that the state of the application conforms to what is
+	    expected. The types of assertion are
+	        . Assert: If the assert condition is failed, test will failed
+	        . Verify: If the assert condition is failed, test will continue
+
+	•  What is an XPath?
+	    - XPath is used to locate a web element based on its XML path. Since HTML and XML are both marked up language,
+	    XPath can be used to locate HTML elements.
+
+	• What is Absolute Xpath and Relative Xpath?
+		- Absolute XPath start with the single forward slash(/), which means the path start from root node.
+		- Relative path starts with Double forward slash(//), which means the path start from the node of your choice
+		it doesn't need to start from the root node.
+
+	• How to find dynamic element?
+        - Use XPath axes: following, following-sibling, ancestor,
+        - Use Xpath with partial matching on Html attributes:
+            ^= as in input[id^='Tech'] means Starting with the given string.
+            $= as in input[id$='_Beamers'] means Ending with the given text.
+            *= as in Input[id*='techbeamers'] means Containing the given value.
+
+	• How many wait type in Selenium?
+	    - There is 3 type of wait:
+	        . Implicit Wait: tell to the web driver to wait for certain amount of time before it throws a "No Such
+	        Element Exception". The default setting is 0. Once we set the time, it is applied to all the elements in the
+	        script
+	        . Explicit Wait: tell the Web Driver to wait for certain conditions (ExpectedConditions) and the maximum
+	        time exceeded before throwing an "ElementNotVisibleException" exception. Explicit Wait time is applied only
+	        to those elements which are intended by us
+	        . FluentWait: tell the Web Driver to wait for special conditions (defined by you) and the maximum time
+	        exceeded before throwing an "ElementNotVisibleException" exception.
+
+    • Mention 5 different exceptions you had in Selenium web driver?
+        - WebDriverException, NoAlertPresentException, NoSuchWindowException, NoSuchElementException, TimeoutException
+
+    • Explain how Selenium Grid works?
+        - Using a Selenium grid allows you to save time by spreading your test across multiple machines. Selenium Grid
+        include 2 components:
+            . Grid Hub: is the main command center for managing which machines your selenium test will run on.
+            . Node: is a machine that you register with your hub (slave PC).
+        - Selenium Grid sent the tests to the hub. These tests are redirected to Selenium Webdriver, which launch the
+        browser and run the test.  With entire test suite, it allows for running tests in parallel.
+
+	• What is the difference between driver.close() and driver.quit command?
+	    - close(): WebDriver’s close() method closes the web browser window that the user is currently working on or we
+	    can also say the window that is being currently accessed by the WebDriver. The command neither requires any
+	    parameter nor does it return any value.
+
+        - quit(): Unlike close() method, quit() method closes down all the windows that the program has opened. Same as
+        close() method, the command neither requires any parameter nor does is return any value.
+
+    • Explain Page Object model?
+        - It is a design pattern to create Object Repository for web UI elements.
+        - Under this model, for each web page in the application, there should be corresponding page class. Page class
+        will find the WebElements of web page and also contains Page methods which perform operations on WebElements.
+        - A ﬂuent interface is an API that uses chains of commands to describe the actions that you are performing. Each
+        chained command will return either a reference to itself, a reference to a new method, or a void.
+
+    • How can I read test data from excels?
+        - Use Apache POI library
+
+    • Can WebDriver test Mobile applications?
+        - Selenium cannot but Appium can
+
+========================================================================================================================
+    TestNG
+========================================================================================================================
+• Annotation:
+    @BeforeSuite:  The annotated method will be run before all tests in this suite have run.
+    @AfterSuite:   The annotated method will be run after all tests in this suite have run.
+    @BeforeClass:  The annotated method will be run before the first test method in the current class is invoked.
+    @AfterClass:   The annotated method will be run after all the test methods in the current class have been run.
+    @BeforeMethod: The annotated method will be run before each test method.
+    @AfterMethod:  The annotated method will be run after each test method.
+    @DataProvider: Marks a method as supplying data for a test method
+    @Listeners:	   Defines listeners on a test class.
+    @Parameters:   Describes how to pass parameters to a @Test method.
+    @Test:	       Marks a class or a method as part of the test.
+
+• You can invoke TestNG in several different ways:
+    - With a testng.xml file
+    - From the command line
+
+• Parallel: We can run parallel test via parallel attribute on the <suite> tag, the attribute includes:
+    - methods:   Run each @Test in different thread
+    - tests:     Run all methods in test tag in same thread, but each test tag will be run in  a separate thread
+    - classes:   Run all methods in the same class in the same thread, but each class will be run in a separate thread
+    - instances: Run all methods in the same instance in the same thread, but two methods on two different instances
+    will be running in different threads
+
+• Report:
+    - Using inbuilt default.html to get the HTML report (emailable-report.htlm file)
+    - You can customize TestNG report in two ways:
+        . Using ITestListener Interface
+        . Using IReporter Interface
+
+========================================================================================================================
+    Framework
+========================================================================================================================
+• The framework is a constructive blend of various guidelines, coding standards, concepts, processes, practices, project
+hierarchies, modularity, reporting mechanism, test data injections etc. to pillar automation testing.
+
+• Framework includes:
+    - Selenium program language: Java
+    - IDE: Intellij
+    - Maven: software project management (manage a project's build) with POM repos.
+    - Test framework: TestNG (test execution/assertion, report, parallel test)
+    - Type of Framework: Data-driven Framework with Page Object Model design pattern.
+    - Page Object Model: we have maintained a class for every web page. Each web page has a separate class which holds
+    the functionality and members of that web page. Separate classes for every individual test.
+    - Framework structure:
+        . base: establish browser base on configure on TestNG xml file
+        . listener: log, screenshoot and retry
+        . testdata: contain test data (excel file)
+        . sreenshoot: fails scenario screenshoot
+        . utils: common function
+        . tests: include pages and testcase
+    - Version Control Tool: We use SVN as a repository to store our test scripts.
+    - CI Tool: Jenkins, we execute test cases on daily basis and also for nightly execution based on the schedule.
+
+========================================================================================================================
+    Java
+========================================================================================================================
+		• What is class and object in Java?
+			=> Class is a template/blueprint to create object. Class consists of attribute (varaiable), behavior (method)
+			and constructor use to create object
+			=> Object is an instance (unique copy) of a class which inherits all attribute and behavior of that class
+		• Can you list some primitive types in Java?
+			=> byte (-127 to 127), short (-32k to 32k), int (-2.1B to 2.1B), long, float, double
+		• Difference between double and float?
+			=> Precision is the main difference:
+			    Float   - 7 digits (32 bit)
+			    Double  - 15-16 digits (64 bit)
+			    Decimal - 28-29 significant digits (128 bit)
+		• immutable (unchangeable) vs mutable object/variable?
+		    => immutable object (unchangeable object) is an object whose state cannot be modified after it is created
+		    We can use final keyword to create an immutable object/variable:
+		        - final variable: is the variable you cannot change the value
+		        - final method: cannot be overrided by subclasses.
+		        - final class: is the class cannot be inherit
+
+		• What is break and continue in java?
+			=> Break stop the loop immediately while continue do make the loop continue
+
+		• Lập trình hướng đối tượng là gì? Các đặc tính của nó?
+			=> Object-oriented programming (OOP) is a programming model constructed around objects. These objects have
+			attribute and behavior which describes from a class. There are 4 characteristics:
+			    - Encapsulation: is the process of combining relative data and functions into a single unit, beside it
+			    also a mechanism for restricting access to some of the object's components known as Information hidden
+
+			    - Abstraction: is a process of hiding the implementation details from the user, only the functionality
+			    will be provided to the user. Ex: an object, we only know what the method do, not how it do it.
+			    => By using class, we can implement Encapsulation and Abstraction
+
+			    - Inheritance:
+			        . Implementation inheritance (subclassing): A class can inherit attribute and behavior of the father
+			        class
+			        . Interface inheritance (subtyping): "interface" construct for declaring a relationship between
+			        unrelated classes, by specifying a common set of methods that each implementing class must include.
+			    - Polymorphism: means the same word to mean different things in different contexts. EX: a method with
+			    same name can act differently (method overloading and override)
+
+		• Khai báo 1 lớp kế thừa từ lớp khác thế nào trong Java?
+			=> Use extends keyword
+
+		• Constructor là gì và cách khai báo như thế nào?
+			=> It is startup task before creating an instance of the class. To create a constructor, we use public modifier
+			and same name of the class with or without the initial parameter
+
+		• Abstracts va interface là gì? Chúng khác nhau ra sao?
+			=> Both of them are use to achieve OOP Abstraction characteristic. They are used to be the template
+			other class.
+			Abstract class:
+			    - can have both abstract methods(no implement code) and non-abstract methods.
+			    - can have instance variables.
+			    - can have constructor.
+			    - can have all access modifier.
+			    - A class may extend only one abstract class.
+			Interface:
+			    - cannot provide any code at all, just the signature (abstract methods).
+			    - cannot have instance variables.
+			    - cannot contain constructors
+			    - access modifier must be public or none.
+			    - A Class may implement several interfaces.
+
+
+		• Có bao nhiêu Access Modifiers? Tên và chúng khác nhau như thế nào?
+			=> There are 4 access modifier:
+			    private     : only the same class can access this variable or method
+			    no modifier : only same class or same package can access
+			    protected   : only same class or same package or subclass can access
+			    public      : everyone can access it
+
+		• Static là gì? Khi nào thì nên dùng static?
+			=> Anything that’s declared to be static belongs to the whole class, not to any particular instance of the
+			class. Only static method can change static variable
+			When we need to access variable/method without creating a instance of that class.
+
+		• Cách khởi tạo 1 instance trong java.
+			=> Use new keywork with corresponding constructor
+
+		•
+
+	    • What is the difference between equals() and == ?
+            => Equals() method is defined in Object class in Java and used for checking equality of two objects defined
+            by business logic.
+
+	    •
+
+
+	    •
+
+
+========================================================================================================================
+    SQL
+========================================================================================================================
+1. SELECT:
+	- Show all column in table posts:
+	    SELECT * FROM posts
+	- Show id, title and body when slug equals post1
+	    SELECT id, title, body, slug FROM posts WHERE slug="post1"
+	- Show all column in table post when slug starts with post
+        SELECT * FROM posts WHERE slug LIKE "post%"
+	- Show all column in table post when slug end with 2
+        SELECT * FROM posts WHERE slug LIKE "%2"
+	- Show all column in table post when id is between 1 to 4
+        SELECT * FROM posts WHERE id IN (1,4)
+	- Show all column in table post when when slug equals post1 and post2
+        SELECT * FROM posts WHERE slug="post1" OR slug="post2"
+
+  2. SELECT within SELECT
+	- List all post which has category id bigger than category id of post id 1
+	    SELECT * FROM posts WHERE category_id > (SELECT category_id FROM posts WHERE id="1")
+
+  3. Aggregate function:
+	- Show the total post which has category_id is 1
+	    SELECT COUNT(id) AS TotalPost FROM posts WHERE category_id="1"
+	- Show the Maximun of category_id
+	    SELECT MAX(category_id) AS MaxCategoryID FROM posts
+	- Show the total post for each category_id
+	    SELECT category_id,COUNT(id) AS MaxPost FROM posts GROUP BY category_id ORDER BY category_id ASC
+	    SELECT category_id,COUNT(id) AS MaxPost FROM posts GROUP BY category_id ORDER BY category_id DESC
+	- Show the total post for each category_id when it is bigger than 1
+	    SELECT category_id, COUNT(id) AS TotalPost FROM posts GROUP BY category_id HAVING category_id>1
+
+  4. JOIN table:
+	- Show JOIN table comment body for each post
+	    // Only show post which has comment
+        SELECT * FROM posts JOIN comments ON (posts.id = comments.post_id)
+        // Show all record of left table if there no data for right table, it displays as NULL
+        SELECT * FROM posts LEFT JOIN comments ON (posts.id = comments.post_id)
+        // Show all record of right table if there no data for left table, it displays as NULL
+        SELECT * FROM posts LEFT JOIN comments ON (posts.id = comments.post_id)
+    - Show total comment for each post:
+        SELECT posts.id, posts.title, a.TotalComment FROM posts JOIN (SELECT comments.post_id, COUNT(comments.id) as
+        TotalComment FROM comments GROUP BY comments.post_id) AS a ON (posts.id = a.post_id)

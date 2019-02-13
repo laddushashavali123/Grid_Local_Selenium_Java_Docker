@@ -1,0 +1,160 @@
+Ref:
+	- https://www.tutorialspoint.com/jmeter/jmeter_overview.htm
+	- https://www.blazemeter.com/blog/what%E2%80%99s-the-max-number-of-users-you-can-test-on-jmeter
+	- https://www.guru99.com/jmeter-element-reference.html
+
+========================================================================================================================
+	Build Test Plan
+========================================================================================================================
+- A Test Plan can be viewed as a container for running tests. It defines what to test and how to go about it. A complete
+test plan consists of one or more elements such as thread groups, logic controllers, sample-generating controllers,
+listeners, timers, assertions, and configuration elements. A test plan must have at least one thread group.
+
+- A Test Plan comprises of at least one Thread Group. Within each Thread Group, we may place a combination of one or
+more of other elements − Sampler, Logic Controller, Configuration Element, Listener, and Timer. Each Sampler can be
+preceded by one or more Pre-processor element, followed by Post-processor element, and/or Assertion element.
+
+- Execution Order of Test Elements:
+    1. Select number of test users with Thread Group:
+        - Right click on the Test Plan and add a new thread group: Add -> Threads (Users) -> Thread Group
+        - Action to be taken after a Sampler error: in case any error occurs during test execution
+            . Continue: to the next element in the test
+            . Stop Thread: to stop the current Thread
+            . Stop Test: to stop completely, in case you want to inspect the error before it continues running
+        - Number of Threads: number of users or connections to your server application
+        - Loop Count: Number of times a single user execute the test scenario
+        - Ramp-Up Period: how long to delay before starting next user. For example, if we have 100 users and a 100 seconds
+        Ramp-Up period, then the delay between starting users would be 1 second (100 users /100 seconds)
+        - Scheduler Configuration − You can configure the start and end time(duration) of running the test
+
+    2. Add default or variable via Configuration Elements:
+        - Web Test Plan:
+            . HTTP request Default:
+                . Right-clicking on the Thread Group and selecting: Add -> Config Element -> HTTP Request Defaults
+                . In the HTTP Request Defaults control panel, enter the default URL for testing, for example:
+                google.com.vn
+
+    3. Add logic controller:
+        - Simple Controller: is just a container for user request
+        - Loop Controller: makes the user request run specified number of times or run forever
+        - Random Controller: makes all the user requests run in random order in each loop period
+        - Module Controller: The goal of Module Controller is to add modularity to JMeter. The general idea is that web
+        applications consist of small units of functionality (i.e. Logon, Create Account, ...). This functionality can
+        be stored in Simple Controller as "modules".  Module Controller will choose which module needs to run. Consider
+        example: You want to simulate: 50 users logging out, 100 users logging in, 30 users search www.google.com
+        - Interleave Controller: picks up and makes one of user request run in each loop of the thread.
+        - Runtime Controller: controls how long its children are allowed to run
+        - Transaction Controller: measures the overall time taken to finish a test execution
+        - nclude Controller: is designed to use an external test plan. This controller allows you to use multiple test
+        plans in JMeter.
+        - Example with Web Test Plan with a loop controller:
+            . Add one HTTP Request to a Loop Controller with a loop count 50
+            . Configure the Thread Group loop count to 2
+            . Then, JMeter will send a total of 50 * 2 = 100 HTTP Requests.
+
+    4. Pre-Processors
+        - Consider a simple example: let's say you wanted JMeter to "spider" through website under test, parse link
+        (check all links on the page) and return the HTML, pre-processor will do above task.
+
+    5. Timers:
+        - Constant Timer:
+            . Thread delay: Amount of delay timer time for each user request
+        - Gaussian Random Timer:
+            . Deviations: parameter of Gaussian Distribution Function
+            . Constant Delay Offset: Additional value in milliseconds
+            => So the total delay equals Deviations plus Constant Delay Offset
+        - Uniform Random Timer:
+            . Random Delay Maximum: Maximum random number of milliseconds to delay
+            . Constant Delay Offset: Additional value in milliseconds
+
+    6. Select Sampler type:
+        - Web Test Plan:
+            . HTTP Request:
+                . Right-click on Thread Group and select: Add -> Sampler -> HTTP Request
+                . In HTTP Request Control Panel, the Path field indicates what optional URI link
+                . Example: you enter "calendar" in Path field so the URL request is sent to http://www.google.com/calendar
+
+    7. Post-Processors (unless SampleResult is null)
+        - Consider a simple example: JMeter send HTTP request to the web server under test (etc www.google.com) and get
+        the response. You want JMeter to stop the test if the server response is error, post-processor will do the task.
+
+    8. Assertions
+        - Response Assertion: lets you add pattern strings to be compared against various fields of the server response
+        - Duration Assertion: tests that each server response was received within a given amount of time
+        - Size Assertion: tests that each server response contains the expected number of byte in it
+        - HTML Assertion: allows the user to check the HTML syntax of the response data. It means the response data must
+        be met the HTML syntax.
+        - XML Assertion: tests that the response data consists of a formally correct XML document format
+
+    9. Select test result in Graph format:
+        - View Results in Graph: Right click Test Plan, Add -> Listener -> Graph Results
+            . Black: The total number of current samples sent
+            . Blue: The current average of all samples sent
+            . Red: The current standard deviation
+            . Green: Throughput rate that represents the number of requests per minute the server handled
+        - View Results in Table: Right click Add -> Listener -> View Result in Table
+        - Assertion Results table: Right click Thread Group, Add -> Listener -> Assertion Results
+
+    10. Run Test and get the test result
+        - Press Run button (Ctrl + R) on Toolbar to start the software testing process
+        - To analyze the performance of the web server under test, you should focus on 2 parameters
+            . Throughput: represents the ability of the server to handle heavy load, the higher the Throughput, the
+            better server performance
+            . Deviation: indicates the deviation from the average, the smaller the better.
+
+
+========================================================================================================================
+    Record a Test Plan
+========================================================================================================================
+1. Record test scenario
+    - Start Jmeter from <your Jmeter location>/bin/jmeter.bat (if you use Mac OS or Linux, It's jmeter.sh)
+    - Create test plan and thread
+    - Create Recorder listener and define controller name:
+        Right click on Thread → Add→ Logic Controller → Recording controller
+    - Add recorder:
+        Right click on Thread Groups/Test plan → Add → Non-Test Elements → HTTP(S) Test Script Recorder
+    - Configure and start recorder:
+        . Set port: default is 8888
+        . Select target controller: choose the new create controller name above
+    - Configure proxy on browser:
+        . Open browser → Settings → Network → User proxy
+        . Update proxy with:
+            IP: localhost
+            Port: The port defined on Recorder
+    - Start the recorder in jMeter
+    - Run your scenario
+    - Stop the recorder
+    - Save new test plan
+
+2. Implement test script
+    - Test plan: Name or project (test plan)
+    - Define Global Variable: Define the variable that you can use any where in test cases
+    - Thread Group
+    - Transaction controller:
+    - HTTP request (Sample)
+    - Add the HTML Header
+    - Get data from respond and use at other sample:
+        . In the request that you want to get data, right click on sample → add → Post Processors → Regular Expression
+        Extractor
+        . Update Expression:
+            Name:                     name of Expression
+            Name of created variable: name of variable that store value
+            Regular expression:       Java expression, you can check your expression at: https://regex101.com/
+            Template:                 position of match: you must put the number between double $ signal: e.g: $1$
+            Match No.:                match no of regular expression
+            Default value:            If regular not match, regular expression will return this value
+
+3. Execute the test script
+    - Update global variable for on test plan
+    - Update Execute property:
+        . Number of Thread: how many user execute in the same time
+        . Ram-up Period:    the time between 2 thread groups
+        . Loop count:       how many loop to execute test script
+
+    - The total users to test is Number of Thread * Loop count.
+
+4. Generate the test report (dashboard)
+    - Open CMD ( terminal on MAC/Linux system) and move to bin folder in jMeter
+        cd [Jmeter_location]/bin
+    - Execute command line:
+        jmeter -g <path is your CSV data> -o <path to folder will contains the report>

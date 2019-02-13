@@ -1,0 +1,481 @@
+Reference:
+    1. https://www.javatpoint.com/java-oops-concepts
+    2. https://web.archive.org/web/20071214085409/http://www.itmweb.com/essay550.htm
+    3. http://www.javacoffeebreak.com/faq/faq0084.html
+    4. https://docs.oracle.com/javase/tutorial/java/IandI/abstract.html
+    5. https://docs.oracle.com/javase/tutorial/java/IandI/polymorphism.html
+
+========================================================================================================================
+========================================================================================================================
+	OOPs Java (In class-based programming)
+========================================================================================================================
+Java is object-oriented language, Object-oriented languages focus on data. In an object-oriented language, you use objects
+and classes to organize your data. Because Java is an object-oriented programming language, your primary goal is to
+describe classes and objects. A class is the idea behind a certain kind of thing. An object is a concrete instance of a
+class. The programmer defines a class, and from the class definition, Java makes individual objects.
+Example:
+	Account number	|	Type	|	Balance
+		123				Check		100
+		456				Credit		200
+		789				Debit		300
+Think of the table’s column headings as a class, and think of each row of the table as an object. The table’s column
+headings describe the Account class. Each object in the Account class has an account number, a type, and a balance
+property. If you opened a new account, you would have another object, and the table would grow an additional row. The
+new object would be an instance of the same Account class.
+
+========================================================================================================================
+========================================================================================================================
+	Class and Object
+========================================================================================================================
+- The Java programming language is a statically typed language, which means that every variable has a type that is known
+at compile time.
+
+- The types of the Java programming language are divided into two categories:
+    1. Primitive type are boolean type (boolean), character type (char) and the numeric types(int, float, ...). A
+    variable of primitive type always holds a primitive value.
+
+    2. Reference type are class types (String, Integer, ...), interface types (List, Collection, ...) and array types
+    (int[], String[], ...). A variable of reference type always holds the value of a reference to an object, this
+    reference is the address of the memory location where the object is stored.
+
+- Class is a construct that allow us to create a type which defined the data structure and methods that we can interact
+with.
+
+- Object is a variable of a class type. It is a unique copy of the class which has all attributes and methods.
+
+- Create class and object in Java:
+    . When you declare a class to be public, you must declare the class in a file whose name is exactly the same as the
+    name of the class (but with the .java extension added). For example, if you declare public class MyImportantCode ,
+    you must put the class's code in a file named MyImportantCode.java. In other words, you can't declare two public
+    classes in one .java file.
+    . Example:
+// The Account class is public, a public class is available for use by all other classes
+public class Account {
+	// A variable declared inside a class but not inside any particular method is a field or instance variable. These are
+	// members of this class.
+	String name;
+	String address;
+	double balance;
+
+	// display method is public, means any code can call a public method, even if the calling code and the public method
+	// belong to two different classes. The word "void" tells Java that when the display method is called, the display
+	// method doesn’t return anything.
+	public void display() {
+		System.out.print(name);
+		System.out.print(" (");
+		System.out.print(address);
+		System.out.print(") has $");
+		System.out.print(balance);
+	}
+
+	// The word double tells Java that when getInterest method is called, it returns a double value back to the place
+	// that called it. The parentheses contain all the things that you pass to the method when you call it.
+	public double getInterest(double percentageRate) {
+		return balance * percentageRate / 100.00;
+	}
+}
+
+public class UseAccount {	
+	public static void main(String args[]) {
+		// reserve the variable name myAccount so that the name can eventually refer to an instance of Account class
+		// When a variable has a reference type, simply declaring the variable isn’t enough
+		// You don’t get an object until you call a constructor and use the keyword new .
+		Account myAccount;	  			
+		// myAccount object creates and refers to an instance of Account class
+		myAccount = new Account();		
+		// yourAccount object creates and now refers to an instance of Account class
+		Account yourAccount = new Account();	
+		
+		myAccount.name = "Barry Burd";
+		yourAccount.name = "Allen Spear";
+		myAccount.address = "222 Cyberspace Lane";
+		yourAccount.address = "999 CMT8";
+		myAccount.balance = 24.02;
+		yourAccount.balance = 100;
+		
+		// print out data of myAccount. When you call a method, you put parentheses after the method’s name
+		myAccount.display();
+		
+		out.print(" plus $");
+		out.print(myAccount.getInterest(5.00));
+		out.println(" interest ")
+	}
+}
+
+========================================================================================================================
+========================================================================================================================
+	Interface
+========================================================================================================================
+- An interface is a reference type in Java and it is similar to class.
+
+- Interface is different from a class in several ways, including:
+    1. An interface does not contain any constructors so you cannot instantiate an interface
+    2. All of the methods in an interface are abstract
+    3. An interface cannot contain instance fields. The only fields that can appear in an interface must be declared
+    both static and final.
+
+- A class can implement an interface, or many interfaces and it inherits everything from these interfaces.
+
+========================================================================================================================
+========================================================================================================================
+	Abstract class
+========================================================================================================================
+
+
+
+========================================================================================================================
+========================================================================================================================
+	Constructors: initialize Object/Instance
+========================================================================================================================
+- A constructor tells the Java to perform a new object’s start-up tasks.
+- A constructor name must be same as its class name and have no explicit return type.
+- A class can have multiple constructors. Each constructor has different parameter list, each parameter is separated from
+another with a comma. To call a specific constructor, you have to match the parameters in the call with the	parameters
+in the declaration.
+- When there is no constructor declarations in the code, Java automatically creates a default constructor (no parameter)
+for that class.
+- EX:
+    public class Temperature() {
+    	private double temp = 0;
+    	private string location;
+
+    	// Default constructor
+    	public Temperature(){ };
+    	// Parameterized constructor 1 with 1 parameter
+    	public Temperature(double t){
+    		// this keyword refers the new object’s field
+    		this.temp = t;
+    	};
+    	// Parameterized Constructor 2 with 2 parameter
+    	public Temperature(double t, string l){
+    		this.temp = t;
+    		this.location = l;
+    	};
+    }
+    public class UseTemperature(){
+    	// Initiate temp object via default constructor
+    	Temperature temp = new Temperature();
+    	// Initiate temp1 object via parameterized constructor 2
+    	Temperature temp1 = new Temperature(31.1);
+    	// Initiate temp2 object via parameterized constructor 3
+    	Temperature temp2 = new Temperature(100.0, 'Hell');
+    }
+
+- Constructor for sub class:
+    public class TemperatureGood extends Temperature {
+    	public TemperatureGood(){
+    		super(); 		// re-use parent constructor
+    	}
+    	public TemperatureGood(double t){
+    		super(t); 		// TemperatureGood has temp and location variable
+    	}
+    public TemperatureGood(double t, string l){ super(t, l); }
+    	public void display() {
+    		out.printf("%5.2f degrees %s\n", getNumber(), getScale());
+    	}
+    }
+
+========================================================================================================================
+========================================================================================================================
+    OOP 4 characteristic
+========================================================================================================================
+- Inheritance: When one object acquires all the properties and behaviours of parent object i.e. known as inheritance. It
+provides code reusability. It is used to achieve runtime polymorphism.
+
+- Polymorphism: When one task is performed by different ways i.e. known as polymorphism. For example: to convince the
+customer differently, to draw something e.g. shape or rectangle etc.
+
+- Abstraction: Hiding internal details and showing functionality is known as abstraction. For example: phone call, we
+don't know the internal processing.
+
+- Encapsulation is a process of wrapping code and data together into a single unit, for example capsule i.e. mixed of
+several elements.
+
+==> Through the use of Classes, we implement all three concepts - Abstraction, Information Hiding and Encapsulation
+
+========================================================================================================================
+========================================================================================================================
+	Inheritance
+========================================================================================================================
+Inheritance represents the (IS-A) relationship, also known as parent-child relationship.
+    - Inheritance is a mechanism in which one class acquires all the properties and behaviors of parent class. A class
+    inherited from parent class is called sub class or child class.
+    - Sub class can reuse methods and fields of parent class, and you can add new methods, fields or override parent
+    method. Sub-class attribute:
+        . Sub class has all public/protected attributes and method from the parent class.
+        . Subclasses don’t inherit constructors so we have to setup manually.
+        . To access the parent class’s private fields, the child class has to call the parent class’s accessor methods.
+        . Keyword 'extend' is used for creating a sub class.
+    - Java only allow for single inheritance, for multiple inheritance use interface.
+    - Types of inheritance in java (Note: multiple and hybrid inheritance is supported through interface only)
+        . Single:       Class B  --> Class A
+        . Multi-level:  Class C --> Class B --> Class A
+        . Hierarchical: Class C --> Class B <-- Class A
+        . Multiple:     Class C <-- Class B --> Class A
+        . Hybrid: combine of Hierarchical and Multiple
+    - EX: create a sub/child class FullTimeEmployee from parent/super class Employee
+        public class FullTimeEmployee extends Employee {
+            public paySalary(int hour){};
+        };
+    - Polymorphism is achieved by Inheritance (Overriding Existing Methods from parent class):
+        public class FullTimeEmployeeWithOvertime extends Employee {
+            @Override		// this annotation is optional, code will work if method has same parent method name
+            public paySalary(int hour){ //pay double };
+        };
+
+
+Aggregation represents (HAS-A) relationship:
+    - If a class have an entity reference, it is known as Aggregation.
+    - Consider a situation, Employee object contains many information such as id, name, email, Id etc. It contains one
+    more object named address, which contains its own information such as city, state, country, zipcode etc. In such
+    case, Employee has an entity reference address, so relationship is Employee HAS-A address.
+        class Employee{
+            String name;
+            Address address;    //Address is a class
+            ...
+        }
+    - When use Aggregation:
+        . Code reuse is also best achieved by aggregation when there is no is-a relationship.
+        . Inheritance should be used only if the relationship is-a is maintained throughout the lifetime of the objects
+        involved; otherwise, aggregation is the best choice.
+
+Summary:
+    - A class has exactly one direct superclass.
+    - A class inherits fields and methods from all its superclasses, whether direct or indirect.
+    - A subclass can override methods that it inherits, or it can hide fields or methods that it inherits. (Note that:
+    hiding fields is generally bad programming practice.)
+    - You can prevent a class from being subclassed by using the final keyword in the class's declaration.
+    - You can prevent a method from being overridden by subclasses by declaring it as a final method.
+    - An abstract class can only be subclassed; it cannot be instantiated.
+
+========================================================================================================================
+========================================================================================================================
+	Polymorphism
+========================================================================================================================
+Polymorphism lets programmers use the same word to mean different things in different contexts. One form of
+polymorphism in Java is method overloading. That’s when different meanings are implied by the code itself. The other
+form is method overriding. That’s when the different meanings are implied by the values of the supplied variables.
+    - Method overloading means there are several methods present in a class having the same name but different
+    types/order/number of parameters. At compile time, Java know which method to invoke by checking the method
+    signatures. So, this is called compile time polymorphism or static binding.
+          class DemoOverload {
+              public int add(int x, int y){  //method 1
+                  return x+y;
+              }
+
+              public int add(int x, int y, int z){ //method 2
+                  return x+y+z;
+              }
+
+              public int add(double x, int y){ //method 3
+                  return (int)x+y;
+              }
+          }
+          class Test{
+              public static void main(String[] args){
+                  DemoOverload demo=new DemoOverload();
+                  System.out.println(demo.add(2,3));      //method 1 called
+                  System.out.println(demo.add(2,3,4));    //method 2 called
+                  System.out.println(demo.add(2.5,3));    //method 3 called
+              }
+          }
+
+    - Method override means a sub class overrides a particular method of the super class. For example, in the program
+    we create an object of the subclass and assign it to the super class reference, if we call the overridden method on
+    the super class reference then the sub class version of the method will be called.
+          class Vehicle{
+              public void move(){
+                  System.out.println(“Vehicles can move!!”);
+              }
+          }
+
+          class MotorBike extends Vehicle{
+              @Override
+              public void move(){
+                  System.out.println(“MotorBike can move and accelerate too!!”);
+              }
+          }
+
+          class Test{
+              public static void main(String[] args){
+                  Vehicle vh = new MotorBike();
+                  vh.move();    // prints MotorBike can move and accelerate too!!
+                  vh = new Vehicle();
+                  vh.move();    // prints Vehicles can move!
+              }
+          }
+
+Note: It’s also legal to say every object in Java is polymorphic in nature, as each one passes an IS-A test for itself
+and also for Object class.
+
+========================================================================================================================
+========================================================================================================================
+	Abstraction
+========================================================================================================================
+Abstraction is a process of hiding the implementation details from the user, only the functionality will be provided to
+the user. Consider an object, we only know what the method do, not how it do it.
+
+When do you use abstraction? When you know something needs to be there but not sure how exactly it should look like.
+
+In java, abstract class and interface are used to achieve abstraction. Interface give 100% abstraction and abstract
+class give 0-100% abstraction.
+    1. Abstract Class/Method:
+        - Abstract class is a class that is declared with abstract keyword:
+            abstract class A {}  I
+        - Abstract class can not be directly instantiated with the new operator.
+        - Abstract class can have parametrized constructors and default constructor in an abstract class.
+        - Abstract classes may contain a mix of methods declared with or without an implementation.
+        - With abstract classes, you can declare fields that are not static and final, and define public, protected, and
+        private concrete methods.
+        - If an abstract class is subclassed, the subclass usually provides implementations for all of the abstract
+        methods in its parent class. However, if it does not, then the subclass must also be declared abstract.
+        - Classes that contain at least one abstract method must be Abstract classes.
+        - An abstract method is a method that is declared with abstract keyword and without an implementation.
+            abstract void printStatus();    //no body and abstract
+        - When to use abstract classes and abstract methods:
+            . You want to share code among several closely related classes that extend your abstract class which have
+            many common methods or fields or require access modifiers other than public (such as protected and private).
+            . You want to declare non-static or non-final fields. This enables you to define methods that can access and
+            modify the state of the object to which they belong.
+
+        - EX: We were modeling the behavior of animals, by creating a class hierarchy that started with a base class
+        called Animal. Animals are capable of doing different things like flying, digging and walking, but there are
+        some common operations as well like eating and sleeping. Some common operations are performed by all animals,
+        but in a different way as well. When an operation is performed in a different way, it is a good candidate for
+        an abstract method (forcing subclasses to provide a custom implementation). Let's look at a very primitive
+        Animal base class, which defines an abstract method for making a sound (such as a dog barking or a cow mooing)
+            public abstract Animal {
+                // Common method
+               public void eat(Food food) {
+                    // do something with food....
+               }
+               // Different method for each subclass
+               public abstract void makeNoise();
+            }
+
+            public Dog extends Animal {
+               public void makeNoise() { System.out.println ("Bark! Bark!"); }
+            }
+
+            public Cow extends Animal {
+               public void makeNoise() { System.out.println ("Moo! Moo!"); }
+            }
+
+        - Why not declare an abstract class as an interface, and have the Dog and Cow implement the interface?
+            => Sure we could but you'd also need to implement the eat and sleep methods. By using abstract classes, you
+            can inherit the implementation of other (non-abstract) methods. You can't do that with interfaces since it
+            cannot provide any method implementations in itself.
+
+        - What is different between abstract method vs override method when sub-classed?
+            => Abstract enforce any child of mine MUST implement this method while you can pass by with override method
+
+    2. Interface:
+        - Interface is a description of the behaviour (method) which an implementing class will have. The implementing
+        class ensures that it must implement all the methods that the interface is defined. It is basically a contract
+        or a promise the class has to make. If a class implements an interface and does not provide method bodies for
+        all functions specified in the interface, then class must be declared abstract.
+        - With interfaces, all fields are automatically public, static, and final, and all methods that you declare or
+        define (as default methods) are public.
+        - A Java class can implement multiple interfaces but it can extend only one abstract class.
+        - When to use interface:
+            . You expect that unrelated classes would implement your interface.
+            . You want to specify behavior of a particular data type, but not concerned about who implements its behavior.
+            . You want to take advantage of multiple inheritances.
+
+========================================================================================================================
+========================================================================================================================
+	Encapsulation
+========================================================================================================================
+Encapsulation is the process of combining relative data and functions into a single unit called package and class:
+    - Package is a grouping of related files (classes, interfaces and enumerations) providing access protection and
+    namespace management (naming conflicts).
+    - To create a package, you include "package" statement along with package name at the first line of every source
+    files that you want to include in the same package. EX: package com.test.dung
+    - If a package statement is not used then the class, interfaces, enumerations, and annotation types will be placed
+    in the current default package.
+    - Package inside the package is called the subpackage. It should be created to categorize the package further.
+    - Note: If you import a package, subpackages will not be imported.
+
+Encapsulation is also a mechanism for restricting access to some of the object's components known asInformation hidden.
+Information Hiding is hiding the internal data which prevents direct, external change to the data by making them private
+via default access modifier and only modify via a controlled manner method.
+
+Fields can be marked as readonly / final / immutable which further restricts change, even within the class.
+
+Default access:
+    - A private member is only accessible within the same class as it is declared.
+    - A member with no access modifier is only accessible within classes in the same package.
+    - A protected member is accessible within all classes in the same package and within subclasses in other packages.
+    - A public member is accessible to all classes (unless it resides in a module that does not export the package it is
+    declared in).
+---------------------------------------------------------------------
+            | Same    | Different Class | Different package | World |			+     : accessible
+            | Class   | Same Package    | But Sub Class	    |       |			blank : not accessible
+---------------------------------------------------------------------
+ public     |    +    |        +        |         +         |   +   |
+---------------------------------------------------------------------
+ protected  |    +    |        +        |         +         |       |
+---------------------------------------------------------------------
+ no modifier|    +    |        +        |                   |       |
+---------------------------------------------------------------------
+ private    |    +    |                 |                   |       |
+---------------------------------------------------------------------
+
+For example, hiding the variables of the classes and enforce data access through the accessors (getters) and mutators
+(setters). The role of accessors and mutators are to return and set the values of an object's state.
+
+To achieve encapsulation in Java:
+    public class Account {
+        private String name;                // Set the variable to private
+        public void setName(String n) {     // Create Mutator method
+            name = n;
+        }
+        public String getName() {           // Create Accessors method
+            return name;
+        }
+    }
+    public class UseAccount {
+        public static void main(String args[]) {
+            Account myAccount = new Account();
+            myAccount.setName("Barry Burd");
+            out.print(myAccount.getName());
+        }
+    }
+
+========================================================================================================================
+ENUM type:
+	- Enum is a special Java type used to define collections of constants.
+	- An enum can contain constants, methods etc...
+	- EX:
+		// Like the declaration of a class, an enum type declaration belongs in a file all its own, so this should belong
+		// to Level.java file
+		public enum Level {
+			HIGH (1), 		//calls constructor with value 1
+			MEDIUM (2), 	//calls constructor with value 2
+			LOW (3)			//calls constructor with value 3
+			; 				// semicolon needed when fields - methods follow
+
+			private final int levelCode;
+			// Enum constructor
+			Level(int levelCode) {
+				this.levelCode = levelCode;
+			}
+			// Enum method
+			public int getLevelCode() {
+				return this.levelCode;
+			}
+		}
+		
+		public class Temp {
+			public static void main(String args[]) {
+				// Declares variable level to be of type Level mean level only has 3 kind of values in enum
+				Level level = Level.HIGH;
+				// Get of all the possible values of a Enum type (array result) by calling its static values() method
+				for (Level level : Level.values()) {
+					System.out.println(level);
+				}
+				// call an enum method via a reference to one of the constant values
+				System.out.println(level.getLevelCode());
+			}
+		}
+

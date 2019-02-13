@@ -1,0 +1,99 @@
+Reference:
+	1. https://wiki.saucelabs.com/display/DOCS/Parallel+Testing+in+Java+with+Maven+and+TestNG#ParallelTestinginJavawithMavenandTestNG-PreparingTestsforParallelExecution
+	2. https://stackoverflow.com/questions/19067885/static-webdriver-instance-synchronization-in-java
+	
+Approach:
+	- Running your tests in parallel means different things to different people, as follows:
+		• Running all of your tests against multiple browsers at the same time
+		• Running your tests against multiple instances of the same browser
+	- Internet Explorer is only supported on Windows machines, and you can only have one version of Internet Explorer
+	installed on a Windows machine. Safari is only supported on OS X machines, and again you can only have one version
+	installed. It soon becomes apparent that, even if we do want to run all of our tests against every browser supported
+	by Selenium, we are not going to be able to do it on one machine
+	- People tend to modify their test framework so that it can accept a list of browsers to run against. They write
+	some code that detects, or specifes, which browsers are available on a machine. Once they have done this they start
+	running all of their tests over a few machines in parallel. We also suffer some side effects by doing this. Different
+	browsers run tests at different speeds because JavaScript engines in all browsers are not equal. We have probably
+	drastically slowed down the process of checking that the code works before you push it to a source code repository.
+	Finally, by doing this we can make it much harder to diagnose issues. When a test fails you have to work out which
+	browser it was running against, as well as why it failed.
+	=> Just pick one browser to run our tests against on our development machines. We can then use a CI server to pick
+	up the slack and worry about browser coverage as part of our build pipeline.
+	
+	
+TestNG parallel:
+	- The parallel attribute on the <suite> tag can take one of following values:
+		<suite name="My suite" parallel="methods" thread-count="5">
+		=> TestNG will run all your test methods in separate threads. Dependent methods will also run in separate threads
+		but they will respect the order that you specified.
+		
+		<suite name="My suite" parallel="tests" thread-count="5">
+		=> TestNG will run all the methods in the same <test> tag in the same thread, but each <test> tag will be in a
+		separate thread. This allows you to group all your classes that are not thread safe in the same <test> and
+		guarantee they will all run in the same thread while taking advantage of TestNG using as many threads as
+		possible to run your tests.
+		
+		<suite name="My suite" parallel="classes" thread-count="5">
+		=> TestNG will run all the methods in the same class in the same thread, but each class will be run in a separate
+		thread.
+		
+		<suite name="My suite" parallel="instances" thread-count="5">
+		=> TestNG will run all the methods in the same instance in the same thread, but two methods on two different
+		instances will be running in different threads. Additionally, the attribute thread-count allows you to specify
+		how many threads should be allocated for this execution.
+		
+	- Example xml:
+		<?xml version="1.0" encoding="UTF-8"?>
+		<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+		<suite name="Suite" parallel="classes" thread-count="2">
+			<parameter name="browserName" value="chrome"/>				// Select a browser to run
+			<parameter name="remote" value="y"/>						// Use remote machine or not
+			<parameter name="gridURL" value="1.1.1.1:4444/wd/hub"/>		// URL of grid hub
+			<parameter name="desiredPlatform" value="Vista"/>			// Selected OS version
+			<parameter name="browserVersion" value="62"/>				// Selected browser version (optional)
+			<test name="Test">
+		        <classes>
+		            <class name="example.Test1" />						// Test class which is executed
+		        </classes>
+		    </test>
+		</suite>
+		
+		
+Thread local:  
+	- ThreadLocal class in Java enables you to create variables that can only be read and written by the same thread.
+	Even if two threads are	executing the same code, and the code has a reference to a ThreadLocal variable, then the
+	two threads cannot see each other's ThreadLocal variables.
+	
+	- Set the value to a ThreadLocal. Please note that values set on a ThreadLocal object only are visible to the thread
+	who set the value, no thread can set an initial value on a ThreadLocal using set() which is visible to all threads.
+		myThreadLocal.set("A thread local value");
+	
+	- Read a stored value. Please note that whenever the ThreadLocal.get() method is called you have to make sure that
+	there is a provision to initialize the thread local as shown above in initialValue() method or you may run into null
+	pointer exception.
+		String threadLocalValue = (String) myThreadLocal.get(); 
+		
+	- Set the initial value for a ThreadLocal object by subclassing ThreadLocal and overriding the initialValue() method.
+	All threads will see the same initial value when calling get() before having called set().
+		private ThreadLocal myThreadLocal = new ThreadLocal<String>() {
+		    @Override protected String initialValue() {
+		        return "This is the initial value";
+		    }
+		};
+		
+	- Example code snippet for Selenium: 
+		public static ThreadLocal<WebDriver> driver;
+		driver = new ThreadLocal<WebDriver>()
+        	{
+            	@Override
+                protected WebDriver initialValue()
+                {
+                	return new FirefoxDriver(); //You can use other driver based on your requirement.
+                }
+            };
+	=> Every time a test thread is created a new browser (firefox in this example) will open
+	=> Make sure any other global variables are ThreadLocals
+	
+	
+	
+		

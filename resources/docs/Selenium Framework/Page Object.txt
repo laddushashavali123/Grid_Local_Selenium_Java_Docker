@@ -1,0 +1,32 @@
+Page Object model:
+    - It is a design pattern to create Object Repository for web UI elements.
+    - Under this model, for each web page in the application, there should be corresponding page class.
+    - This Page class will find the WebElements of that web page and also contains Page methods which
+    perform operations on those WebElements.
+
+Fluent page objects:
+    - A ﬂuent interface is an API that uses chains of commands to describe the actions that you are
+    performing. Each chained command will return either a reference to itself, a reference to a new
+    method, or a void. EX: loginPage.enterUsername("foo").enterPassword("bar").andLogin();
+    - Reference: https://en.wikipedia.org/wiki/Fluent_interface.
+
+Selenium PageFactory class:
+    - @Findby annotation: a way to pass a By object into a driver.findElement() call to create a WebElement.
+    This driver.findElement() call is completely transparent to you and will be performed in the background
+    whenever you use the WebElement that has an annotation applied to it. This also means that you are less
+    likely to get a StaleElementReferenceException because the element will be found every time you try to
+    interact with it.
+    - Supported By: className, css, id, linkText, name, partialLinkText, tagName, xpath
+    - Findby for an element:
+        @FindBy(id = "ID_1") private WebElement idField;
+    - Findby for list of elements:
+        @FindBy(tagName = "a") List<WebElement> links;
+
+    - A good rule of thumb to use when writing page objects using the PageFactory implementation is to make
+    all the WebElement objects that you define private. This forces you to write functions in your page
+    objects that interact with the WebElement objects that you have defined rather than using the page object
+    as a glorified WebElement store.
+
+    - For the PageFactory annotation to work, you must initialize the class. The WebElement objects will not
+    be proxied, and the annotations that you have specified will not be applied if you forget to do this.
+        LoginPage loginPage = PageFactory.initElements(driver, LoginPage.class);

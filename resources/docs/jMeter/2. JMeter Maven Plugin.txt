@@ -1,0 +1,60 @@
+Ref:
+	- https://www.blazemeter.com/blog/how-use-jmeter-maven-plugin
+	- https://github.com/jmeter-maven-plugin/jmeter-maven-plugin/wiki/Advanced-Configuration
+
+========================================================================================================================
+	Run jMeter with jMeter Maven plugin
+========================================================================================================================
+Step 1:
+    - Create a Jmeter Test Plan via Jmeter GUI.
+    - Save new test plan (jmx file) to folder ${basedir}\src\jmeter
+
+Step 2:
+    - Configure which test plan need to be executed via <testFilesDirectory> parameter in POM file. By default, executes
+    all tests present in testFilesDirectory. But, we can also  configure to specify the test:
+        . Specifying <testFilesIncluded> as
+            <testFilesIncluded>
+                <jMeterTestFile>test1.jmx</jMeterTestFile>
+                <jMeterTestFile>test2.jmx</jMeterTestFile>
+            <testFilesIncluded>"
+        . Specifying <testFilesIncluded> Using Regex as
+            <testFilesIncluded>
+                <jMeterTestFile>foo*.jmx</jMeterTestFile>
+            </testFilesIncluded>"
+        . Specifying <testFilesExcluded> as
+            <testFilesExcluded>
+                <excludeJMeterTestFile>test3.jmx</excludeJMeterTestFile>
+                <excludeJMeterTestFile>test4.jmx</excludeJMeterTestFile>
+            </testFilesExcluded>"
+        . Specifying <testFilesExcluded> Using Regex as
+            <testFilesExcluded>
+                <excludeJMeterTestFile>*bar.jmx</excludeJMeterTestFile>
+            </testFilesExcluded>"
+    - Pass required parameters to Jmeter Test Plan through maven, see below chap.
+    - Avoid "Out Of Memory" errors during load test.
+
+Step 3: Run the test
+    - mvn verify -Dparameterx=xx ....
+
+Step 4: View the result
+    - The raw results are located at /target/jmeter/results. All http samples have attributes with following meaning:
+        t  - Elapsed time (milliseconds) from the test beginning
+        it - Idle Time. The time that is not spent for sampling (milliseconds) (usually is equal to 0)
+        ts - timeStamp. The time counter beginning since midnight Jan 1, 1970 UTC (milliseconds)
+        s  - Success status (true/false)
+        lb - Label of sampler
+        rc - Response Code (e.g. 200). See more response codes here
+        rm - Response Message (e.g. OK) - a message coming with a response.
+        tn - JMeter test’s Thread Name
+        dt - Provided data type
+        by - Request bytes
+        ng - Active threads number in current group BlazeDemo Home page
+        na - Active threads number for all thread groups
+    - Viewing the Results in a Graph:
+        . Use JMeter Graph Maven plugin or
+        . Use jmeter-analysis-maven-plugin
+
+========================================================================================================================
+	Advanced POM Configuration
+========================================================================================================================
+

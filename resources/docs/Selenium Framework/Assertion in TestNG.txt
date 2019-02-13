@@ -1,0 +1,23 @@
+Reference:
+	1. https://jitpack.io/com/github/cbeust/testng/master-6.12-g09766d5-166/javadoc/org/testng/Assert.html
+	2. http://www.seleniumeasy.com/testng-tutorials/assertions-in-testng
+
+========================================================================================================================
+    Types Of Assertions
+========================================================================================================================
+- Assertion: is the default assert mechanism built into TestNG’s <org.testng.assert> package. We use it when a test has
+to stop immediately after the assertion fails.
+	
+- Verification: is is a custom assert mechanism supported by TestNG’s <org.testng.asserts.Softassert> package. We use it
+when a test has to continue execution even after an assertion fails in the sequence. Note: If you forget to call
+assertAll() at the end of your test, the test will pass even if any assert objects threw exceptions as shown in the
+above example. So don’t forget to add assertAll()
+
+Common assertions supported by TestNG:
+	assertEqual(String actual,String expected)
+	assertEqual(String actual,String expected, String message)
+	assertEquals(boolean actual,boolean expected)
+	assertTrue(condition)
+	assertTrue(condition, message)
+	assertFalse(condition)
+	assertFalse(condition, message)

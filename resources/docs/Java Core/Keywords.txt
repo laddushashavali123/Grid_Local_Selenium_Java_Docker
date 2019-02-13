@@ -1,0 +1,230 @@
+Reference:
+    1. https://www.javatpoint.com/java-oops-concepts
+    2.
+
+========================================================================================================================
+	final
+========================================================================================================================
+- A final class cannot be inherited. It is useful when there is a good reason to prohibit inheritance.
+- A final method cannot be overrided by subclasses.
+- A final variable can only be initialized once, making it safe to ensure the value cannot be changed once assigned.
+- Methods called from constructors should generally be declared final.  If a constructor calls a non-final method, a
+subclass may redefine that method with surprising or undesirable results.
+-
+- EX:
+    int i = 1; i = 2; System.out.println(i);		// 2
+    final int j =1 ; j = 2; System.out.println(j);	// cannot assign a value to final variable j
+
+
+========================================================================================================================
+	new
+========================================================================================================================
+- new keyword is used to allocate memory at run time. All objects get memory in Heap memory area.
+- new keyword is used to create new instance.
+    class Student{
+        int id; String name;
+        public static void main(String args[]){
+            Student s1=new Student();       //creating an object of Student
+            System.out.println(s1.id);      //accessing member through reference variable
+            System.out.println(s1.name);
+        }
+    }
+
+========================================================================================================================
+	Super
+========================================================================================================================
+- Super is a reference variable which is used to refer immediate parent class object.
+- A field that has the same name as a field in the superclass hides the superclass's field. The field in the superclass
+cannot be referenced by its simple name. Instead, the field must be accessed through super as 1. Generally speaking, we
+don't recommend hiding fields as it makes code difficult to read.
+	1. Super can be used to refer immediate parent class instance variable.
+		public class Animal { String color="white"; }  
+		
+		public class Dog extends Animal {  
+			String color="black";  
+			void printColor(){  
+				System.out.println(color);			//prints color of Dog class  
+				System.out.println(super.color);	//prints color of Animal class  
+			}  
+		}  
+		
+		class TestSuper1{
+			public static void main(String args[]){  
+			Dog d=new Dog();  
+			d.printColor();  
+		}}  
+	2. Super can be used to invoke immediate parent class method.
+		class Animal{  
+			void eat() { System.out.println("eating..."); }  
+		}  
+		
+		class Dog extends Animal{  
+			void eat(){System.out.println("eating bread...");}  
+			void bark(){System.out.println("barking...");}  
+			void work(){ super.eat(); }
+			bark();  
+		}  
+		
+		class TestSuper2{  
+			public static void main(String args[]){  
+				Dog d=new Dog();  
+				d.work();  
+		}}  
+	3. Super() can be used to invoke immediate parent class constructor.
+	4. Note: super() is added in each class constructor automatically by compiler if there is no super() or this().
+
+
+========================================================================================================================
+    this
+========================================================================================================================
+1) this: to refer current class instance variable
+	- The this keyword can be used to refer current class instance variable. If there is ambiguity between the instance
+	variables and parameters, this keyword resolves the problem of ambiguity.
+	- It is better approach to use meaningful names for variables. So we use same name for instance variables and
+	parameters in real time, and always use this keyword.
+	- EX:
+		// Parameters (formal arguments) and instance variables are same name.
+		class Student{
+			int rollno;
+			String name;
+			Student(int rollno,String name){
+				rollno = rollno;
+				name = name;
+			}
+			void display(){System.out.println(rollno+" "+name);}
+		}
+		// So, we are using this keyword to distinguish local variable and instance variable
+		class Student1{
+			int rollno;
+			String name;
+			Student(int rollno,String name){
+				this.rollno = rollno;
+				this.name = name;
+			}
+			void display(){System.out.println(rollno+" "+name);}
+		}
+		// If local variables(formal arguments) and instance variables are different, there is no need to use this
+		class Student2{
+			int rollno;
+			String name;
+			Student(int roll_number,String name_student){
+				rollno = roll_number;
+				name = name_student;
+			}
+			void display(){System.out.println(rollno+" "+name);}
+		}
+		class TestThis1{
+			public static void main(String args[]){
+				Student  s1 = new Student(111,"A");
+				Student1 s2 = new Student1(222,"B");
+				Student2 s3 = new Student2(333,"C");
+				s1.display();  						// Output:	0 null
+				s2.display();  						// Output:	222 B
+				s3.display();  						// Output:	333 C
+			}
+		}
+2) this: to invoke current class method
+	- You may invoke the method of the current class by using the this keyword.
+	- If you don't use the this keyword, compiler automatically adds this keyword while invoking the method.
+	- EX:
+		class A{
+			void m(){System.out.println("hello m");}
+			void n(){
+				System.out.println("hello n");
+				this.m();
+		}}
+		class TestThis4{
+			public static void main(String args[]){
+				A a = new A();
+				a.n();  							// Output: hello n hello m
+		}}
+3) this() : to invoke current class constructor
+	- The this() constructor call can be used to invoke the current class constructor.
+	- It is used to reuse the constructor. In other words, it is used for constructor chaining.
+	- EX:
+		class A{
+			A(){System.out.println("hello a");}
+			A(int x){
+				this(); 							// Call to this() must be the first statement in constructor. Call the above constructor
+				System.out.println(x);
+		}}
+		class TestThis5{
+			public static void main(String args[]){
+			A a=new A(10);  						// Output: hello a 10
+		}}
+
+
+========================================================================================================================
+	Static
+========================================================================================================================
+- Anything that’s declared to be static belongs to the whole class, not to any particular instance of the class.
+- We can apply java static keyword with variables (class variable), method (class method), package, blocks and nested class.
+- A static variable/method can be invoke without creating a instance of that class.
+	
+1. Java static variable:
+	- The static variable can be used to refer the common property of all objects (that is not unique for each object).
+	- The static variable gets memory only once at the start of the execution.
+	- The static variable can be accessed directly by the class name and doesn’t need any object.
+	- EX: If you have 100 students in a school which have same school name. It will be better to declare a common variable
+	for school name (class variable) instead initilizes 100 intances variable school name for each student.
+		class Student8{
+			int rollno; String name;
+			static String college ="ITS";
+
+			Student8(int r,String n){
+				rollno = r;  name = n;
+			}
+			void display (){System.out.println(rollno+" "+name+" "+college);}
+
+			public static void main(String args[]){
+				Student8 s1 = new Student8(111,"Karan");
+				s1.display();  		//  Output:111 Karan ITS
+			}
+		}
+2. Java static method:
+	- A static method belongs to the class rather than object of a class.
+	- A static method can be invoked without the need for creating an instance of a class.
+	- A static method can change only static data.
+	- There are two main restrictions for the static method:
+		. The static method can not use non static data member or call non-static method directly.
+		. this and super cannot be used in static context.
+	- EX:
+		class Student9{
+			int rollno;  String name;
+			static String college = "ITS";
+
+			static void change(String newName){
+				college = newName;
+			}
+
+			Student9(int r, String n){
+				rollno = r;  name = n;
+			}
+
+			void display (){System.out.println(rollno+" "+name+" "+college);}
+
+			public static void main(String args[]){
+				Student9 s1 = new Student9 (111,"Karan");
+				s1.display();  								// Output: 111 Karan ITS
+
+				Student9.change("ABC");  					// Static method is called without creating an instance
+				Student9 s2 = new Student9 (222,"Aryan");
+				s2.display();  								// Output: 222 Aryan BBDIT
+			}
+		}
+3. Java static import:
+	- static import: allows unqualified access to static members of other classes.
+	- Note: static import can make your code confusing to read.
+	- EX:
+		import java.lang.Math;
+		...
+		System.out.println("round " + Math.round(1032.897));  // OK
+		System.out.println("round1 " + round(60,102));		  // Error: The message was non-static variable or method cannot be referenced from a static context
+		-------------
+		import static java.lang.Math.round;
+		...
+		System.out.println("round " + Math.round(1032.897));  // Error: The message was non-static variable or method cannot be referenced from a static context
+		System.out.println("round1 " + round(60,102));		  // OK
+
+
+			

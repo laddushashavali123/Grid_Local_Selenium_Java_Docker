@@ -1,0 +1,77 @@
+Ref:
+	- https://github.com/cucumber/cucumber/wiki/Gherkin
+	- https://cucumber.io/docs/reference
+
+========================================================================================================================
+	Gherkin
+========================================================================================================================
+- Gherkin is a Business Readable, Domain Specific Language that lets you describe software's behaviour without detailing
+how that behaviour is implemented.
+- Gherkin serves two purposes: living documentation and automated tests.
+- There are a few conventions:
+    . Single Gherkin source file contains a description of a single feature
+    . Source files have .feature extension
+    . Gherkin is a line-oriented language that uses indentation to define structure (as Python)
+- In Gherkin, each line start with a Gherkin keyword, followed by any text you like. The main keywords are:
+    Feature
+    Scenario
+    Given, When, Then, And, But (Steps)
+    Background
+    Scenario Outline
+    Examples
+There are a few extra keywords as well:
+    """ (Doc Strings)
+    | (Data Tables)
+    @ (Tags)
+    # (Comments)
+
+========================================================================================================================
+	Gherkin structure
+========================================================================================================================
+- Gherkin source file is supposed to describe a single feature of the system, or a particular aspect of a feature.
+- Gherkin source files have .feature extension
+- Example: File name is demo.feature
+# First line starts the feature.
+Feature: Refund item
+    # This line is description for this feature and un-parsed
+    This feature will help customer refund the item easier
+
+    # Grouping under Background section for repeating steps in all of the scenarios in a feature file (Setup step)
+    Background: User navigates to Company home page
+        # Given steps: use to configure the system such as creating and configuring objects or adding data to the test
+        # database.
+        Given I am on the "Company home" page on URL "www.mycomany.com"
+        # We can use many Given steps but just use And or But for number 2 and upwards to make it more readable
+        And My friend is also on the "Company home" page on URL "www.mycomany.com"
+        # Then steps are used to describe an expected outcome, or result.
+        Then I should see "Log In as Employee" message
+
+    # A scenario is a concrete example that illustrates a business rule. It consists of a list of steps
+    Scenario: Successful login
+        # When steps are used to describe an event, or an action. It's strongly recommended you only have a single When
+        # step per scenario. If you add more When step, it's usually a sign that you should split the scenario up in
+        # multiple scenarios.
+        When I fill in "Username" with "Test"
+        # We can use many When steps but just use And or But for number 2 and upwards to make it more readable
+        And I fill in "Password" with "123"
+        And I click on the "Log In" button
+        # Then steps are used to describe an expected outcome, or result.
+        Then I am on the "My profile" page on URL "www.mycompany.com/myprofile"
+        And I should see "Welcome to your profile" message
+        And I should see the "Log out" button
+
+    # When you have a complex business rule with severable variable inputs or outputs you might end up creating several
+    # scenarios that only differ by their values.
+    Scenario Outline: A different situation
+        When I fill in "Username" with <user>
+        And I fill in "Password" with <pass>
+        And I click on the "Log In" button
+        Then I am on the "My profile" page on URL "www.mycompany.com/myprofile"
+        And I should see "Welcome to your profile" message
+        And I should see the "Log out" button
+
+        Example:
+            | user | pass |
+            | abc1 | 1234 |
+            | abc2 | 1234 |
+            | abc3 | 1234 |

@@ -1,0 +1,28 @@
+Ref:
+    - https://www.artfulsoftware.com/infotree/mysqltips.php
+------------------------------------------------------------------------------------------------------------------------
+    Window version
+------------------------------------------------------------------------------------------------------------------------
+- Steps:
+    1. Download mySQL from the website and extract it.
+
+    2. Check if data folder is existed, if not then create once.
+
+    3. Go to bin directory from extract folder, copy the path and set it as a environment variable.
+
+    4. Run the command prompt as admin and cd to bin directory.
+
+    5. Run command: mysqld –install
+
+    6. Create a text file with the password that you want to use and save it, for example: C:\mysql-init.txt
+        MySQL 5.7.6 and later:      ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyNewPass';
+        MySQL 5.7.5 and earlier:    SET PASSWORD FOR 'root'@'localhost' = PASSWORD('MyNewPass');
+    7. Start the server with init file by cmd, after the server has started successfully, delete C:\mysql-init.txt:
+        mysqld --init-file=C:\\mysql-init.txt
+
+    8. Start mysql as a window service:
+        net start mysql
+
+    9. Access mysql server by command:
+        mysql -u root -p
+    then enter the new password

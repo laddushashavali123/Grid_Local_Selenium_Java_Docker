@@ -1,0 +1,7 @@
+
+- API (Application programming interface) is a document that contains description of all the features of a product or
+software. It represents classes and interfaces that software programs can follow to communicate with each other. An API
+can be created for applications, libraries, operating systems, etc
+
+- HTTP (Hypertext Transfer Protocol) is the set of rules for transferring files (text, graphic images, sound, video, and
+other multimedia files) on the World Wide Web. HTTP is an application protocol that runs on top of the TCP/IP.

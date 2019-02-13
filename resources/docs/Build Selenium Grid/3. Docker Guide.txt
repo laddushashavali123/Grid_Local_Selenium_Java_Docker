@@ -1,0 +1,158 @@
+Ref:
+    1. https://docs.docker.com/docker-for-windows/install/#about-windows-containers
+    2. https://www.youtube.com/watch?v=pGYAg7TMmp0
+
+========================================================================================================================
+    Introducing OpenStack
+========================================================================================================================
+
+========================================================================================================================
+    Introducing Docker
+========================================================================================================================
++ In a traditional VM setup, you would take a machine, install an operating system on that machine, and then install a
+hypervisor such as VirtualBox or VMware. You could then create a VM image on the hypervisor, which pretends to be a
+computer. This image would have its own BIOS and emulated hardware. You would then install an OS (operating system) on
+this image. This is generally referred to as the guest OS.
+
++ Once this is done, you would boot up the guest OS and treat it like any other computer. If you want to isolate your
+applications, you can create multiple guest operating systems, but this can be costly.
+       ||-----------|-----------|-----------||
+       || App 1     | App 2     | App 3     ||
+       ||-----------|-----------|-----------||
+       || Bins/Libs | Bins/Libs | Bins/Libs ||
+       ||-----------|-----------|-----------||
+       || Guest OS  | Guest OS  | Guest OS  ||          Traditional virtual machine
+       ||-----------|-----------|-----------||
+       ||             Hypervisor            ||
+       ||-----------------------------------||
+       ||        Host Operating System      ||
+       ||-----------------------------------||
+       ||           Infrastructure          ||
+       ||-----------------------------------||
+
++ Docker is like a VM but slightly different. It is a program that you install on the host machine instead of the
+hypervisor. Docker can then start up an application in what is known as a container. Containers are totally isolated,
+just like a virtual machine. However,  Docker uses the host OS instead of a guest OS.
+       ||-----------|-----------|-----------||
+       || App 1     | App 2     | App 3     ||
+       ||-----------|-----------|-----------||
+       || Bins/Libs | Bins/Libs | Bins/Libs ||
+       ||-----------------------------------||
+       ||           Docker Engine           ||          Docker alternative
+       ||-----------------------------------||
+       ||          Operating System         ||
+       ||-----------------------------------||
+       ||           Infrastructure          ||
+       ||-----------------------------------||
+
++ This gives you some advantages, which are as follows:
+    - Containers are not as resource-intensive as virtual machine
+    - Containers can start up much faster than virtual machines
+
++ How does Docker do this? Well, it uses a Linux technology called namespaces. The following are the Linux namespaces:
+    - pid: This is used for process isolation
+    - net: This is used to manage network interfaces
+    - ipc: This is used to manage interprocess communication
+    - mnt: This is used to manage mount points
+    - uts: This is used to isolate kernel and version identifiers
+Docker uses these namespaces to isolate containers. This means that they are unaware of anything else that is running on
+the host OS. These containers have their own isolated process tree, their own isolated network stack, and so on.
+
++ The wonderful thing about Docker is that all of these containers can be made to interact with each other. This means
+that you can take lots of individual containers and stick them together to make something quite complex.
+
++ For example, a basic LNMP (Linux, Nginx, MySQL, and PHP) setup.
+    - Normally, you would create a Linux virtual machine and then install Nginx, PHP and MySQL on it.
+    - With Docker, you can split up this stack with multiple containers. The most common setup is an Nginx container
+     with added PHP support and a MySQL container. You can then link these two containers together to give you the LNMP
+     stack
+    - If you wanted to update MySQL, you would just delete the MySQL container and add a new one. Wait a second! If I
+    delete MySQL and start it up again, would I lose all my data? Well, that's not a problem. Docker can also create
+    data-only containers. So, you can create a data-only container that holds all the data that MySQL writes to the
+    disk that is totally isolated from the MySQ
+
+========================================================================================================================
+    Components of Docker
+========================================================================================================================
++ Docker for Mac     − It allows one to run Docker containers on the Mac OS.
++ Docker for Linux   − It allows one to run Docker containers on the Linux OS.
++ Docker for Windows − It allows one to run Docker containers on the Windows OS.
+
++ Docker Engine:
+    − It is used for building Docker images and creating Docker containers.
+
++ Docker Compose:
+    − This is used to define applications using multiple Docker containers.
+
++ Docker Hub:
+    - It is a registry service which allows you to link to code repositories, build your images and test them, stores
+    manually pushed images, and links to Docker Cloud so you can deploy images to your hosts.
+    - It provides a centralized resource for container image discovery, distribution and change management, user and
+    team collaboration, and workflow automation throughout the development pipeline.
+    -Docker Hub provides the following major features:
+        . Image Repositories: Find and pull images from community and official libraries, and manage, push to, and pull
+        from private image libraries to which you have access
+        . Automated Builds: Automatically create new images when you make changes to a source code repository
+        . Webhooks: A feature of Automated Builds, it let you trigger actions after a successful push to a repository
+        . Organizations: Create work groups to manage access to image repositories
+        . GitHub and Bitbucket Integration: Add the Hub and your Docker Images to your current workflows
+    - You can also use others Hosted Docker Registries instead of docker hub (ex: quay.io)
+
++ Docker Store:
+    - For developers and operators, Docker Store is the best way to discover high-quality Docker content.
+    - Independent Software Vendors (ISVs) can utilize Docker Store to distribute and sell their Dockerized content.
+
++ Docker Machine:
+    - When people say “Docker” they typically mean Docker Engine, the client-server application made up of the Docker
+    daemon, a REST API that specifies interfaces for interacting with the daemon, and a CLI client that talks to the
+    daemon (through the REST API wrapper).
+    - Docker Machine is a tool to provision and manage large numbers of Docker remote hosts on the network (in the cloud
+    or locally).
+    - Docker Machine is installed in your local computer and from that you can install Docker Engine on one or more
+    virtual systems via docker-machine commands. These virtual systems can be local (as when you use Machine to install
+    and run Docker Engine in VirtualBox on Mac or Windows) or remote (as when you use Machine to provision Dockerized
+    hosts on cloud providers).
+
+
+========================================================================================================================
+    Docker Images and containers
+========================================================================================================================
++ In Docker, everything is based on Images. An image is a combination of a file system and parameters.
+
++ A container is launched by running an image.
+
++ An image is an executable package that includes everything needed to run an application: code, runtime, libraries,
+environment variables, and configuration files.
+
++ A container is a runtime instance of an image
+
+
+========================================================================================================================
+    CLI
+========================================================================================================================
++ List Docker CLI commands:
+    docker
+    docker container --help
+
++ Display Docker version and info
+    docker --version
+    docker version
+    docker info
+
++ Login Docker:
+    docker login
+
++ Run a docker image (create new container):
+    docker run [image_name]
+
++ List all downloaded images:
+    docker image ls
+
++ List all running container:
+    docker container ls
+
++ List all all container including the stopped container:
+    docker container ls --all
+
++ Remove an container:
+    docker container rm

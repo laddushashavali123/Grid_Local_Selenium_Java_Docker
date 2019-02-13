@@ -1,0 +1,170 @@
+Reference:
+    1. https://docs.oracle.com/javase/tutorial/jdbc/basics/connecting.html
+    2. https://www.javatpoint.com/java-jdbc
+
+========================================================================================================================
+	JDBC (Java Database Connectivity)
+========================================================================================================================
+- Before JDBC, ODBC API was the database API to connect and execute query with the database. But, ODBC API uses ODBC
+driver which is written in C language (i.e. platform dependent and unsecured). That is why Java has defined its own API
+(JDBC API) that uses JDBC drivers (written in Java language).
+
+- In general, to process any SQL statement with JDBC, you follow these steps:
+    1. Establishing a connection with the data source you want to use:
+        - A data source can be a DBMS, a legacy file system, or some other source of data with a corresponding JDBC
+        driver. Typically, a JDBC application connects to a target data source using one of two classes:
+            . DriverManager: This fully implemented class connects an application to a data source, which is specified
+            by a database URL. When this class first attempts to establish a connection, it automatically loads any JDBC
+            4.0 drivers found within the class path. Note that your application must manually load any JDBC drivers prior
+            to version 4.0
+            . DataSource: This interface is preferred over DriverManager because it allows details about the underlying
+            data source to be transparent to your application. A DataSource object's properties are set so that it
+            represents a particular data source. See Connecting with DataSource Objects for more information. For more i
+            nformation about developing applications with the DataSource class, see the latest The Java EE Tutorial
+    2. Create a statement:
+        - A Statement is an interface that represents a SQL statement. You execute Statement objects, and they generate
+        ResultSet objects, which is a table of data representing a database result set.
+        - You need a Connection object to create a Statement object.
+    3. Execute the query:
+        - To execute a query, call an execute method from Statement such as the following:
+            . execute: Returns true if the first object that the query returns is a ResultSet object. Use this method if
+            the query could return one or more ResultSet objects. Retrieve the ResultSet objects returned from the query
+            by repeatedly calling Statement.getResultSet.
+            . executeQuery: Returns one ResultSet object.
+            . executeUpdate: Returns an integer representing the number of rows affected by the SQL statement. Use this
+            method if you are using INSERT, DELETE, or UPDATE SQL statements.
+    4. Process the ResultSet object:
+        - You access the data in a ResultSet object through a cursor
+        - Note that this cursor is not a database cursor, it is a pointer that points to one row of data in the ResultSet
+        object. Initially, the cursor is positioned before the first row.
+    5. Close the connection:
+        - When you are finished using a Statement, call the method Statement.close to immediately release the resources
+        it is using. When you call this method, its ResultSet objects are closed.
+
+
+========================================================================================================================
+	Establishing a Connection using the DriverManager Class
+========================================================================================================================
+1. By DriverManager:
+    - The method DriverManager.getConnection establishes a database connection. This method requires a database URL, which
+    varies depending on your DBMS. The following are some examples of database URLs:
+        . MySQL: jdbc:mysql://localhost:3306/, where localhost is the name of the server hosting your database, and 3306
+        is the port number
+        . Java DB: jdbc:derby:testdb;create=true, where testdb is the name of the database to connect to, and create=true
+        instructs the DBMS to create the database.
+    - Specifying Database Connection with MySQL Database URL:
+        . Syntax:
+            jdbc:mysql://[host][,failoverhost...]
+            [:port]/[database]
+            [?propertyName1][=propertyValue1]
+            [&propertyName2][=propertyValue2]...
+        . host:port is the host name and port number of the computer hosting your database. If not specified, the default
+        values of host and port are 127.0.0.1 and 3306, respectively
+        . database is the name of the database to connect to. If not specified, a connection is made with no default
+        database
+        . failover is the name of a standby database (MySQL Connector/J supports failover)
+        . propertyName=propertyValue represents an optional, ampersand-separated list of properties. These attributes
+        enable you to instruct MySQL Connector/J to perform various tasks.
+
+2. By DataSource:
+
+
+
+========================================================================================================================
+	Create and execute a statement
+========================================================================================================================
+1. Using Statements:
+    - To execute the SQL query, such as those specified by the String createString, use a Statement object.
+    - To execute a SQL query, call the method Statement.executeUpdate.
+    - All Statement objects are closed when the connection that created them is closed. However, it is good coding
+    practice to explicitly close Statement objects as soon as you are finished with them.
+    - EX: see full code in database utils
+        String createString = "SQL query command";
+        Statement stmt = con.createStatement();
+        stmt.executeUpdate(createString);
+        stmt.close()
+
+2. Using PreparedStatements:
+    - This special type of statement is derived from the more Statement class
+    - If you want to execute a Statement object many times, it usually reduces execution time to use a PreparedStatement
+    object instead.
+    - Although PreparedStatement objects can be used for SQL statements with no parameters, you probably use them most
+    often for SQL statements that take parameters.
+
+
+3. Transactions:
+    - There are times when you do not want one statement to take effect unless another one completes
+    - A transaction is a set of one or more statements that is executed as a unit, so either all of the statements are
+    executed, or none of the statements is executed.
+    - When a connection is created, it is in auto-commit mode. This means that each individual SQL statement is treated
+    as a transaction and is automatically committed right after it is executed. (To be more precise, a SQL statement is
+    committed when it is completed, not when it is executed. A statement is completed when all of its result sets and
+    update counts have been retrieved)
+    - The way to allow two or more statements to be grouped into a transaction is to disable the auto-commit mode. This
+    is demonstrated in the following code, where con is an active connection:
+        con.setAutoCommit(false);
+    - After auto-commit mode is disabled, no SQL statements are committed until you call the method commit explicitly.
+    All statements executed after the previous call to the method commit are included in the current transaction and
+    committed together as a unit:
+        con.commit();
+    -
+
+
+========================================================================================================================
+	Process the ResultSet object and close the connection
+========================================================================================================================
+- A ResultSet object is a table of data representing a database result set, which is usually generated by executing a
+statement that queries the database.
+- Note that a ResultSet object can be created through any object that implements the Statement interface, including
+PreparedStatement, CallableStatement, and RowSet.
+- You access the data in a ResultSet object through a cursor. Initially, the cursor is positioned before the first row,
+method ResultSet.next moves the cursor to the next row, it returns false if the cursor is positioned after the last row.
+- ResultSet objects can have different functionality and characteristics, these characteristics are:
+    1. ResultSet Types: determines the ways in which the cursor can be manipulated, and how concurrent changes made to
+    the underlying data source are reflected by the ResultSet object.
+        - TYPE_FORWARD_ONLY: cursor moves forward only.
+        - TYPE_SCROLL_INSENSITIVE: cursor can move both forward and backward relative to the current position, and it
+        can move to an absolute position. ResultSet object cannot be modified.
+        - TYPE_SCROLL_SENSITIVE: cursor can move both forward and backward relative to the current position, and it can
+        move to an absolute position. ResultSet object can be modified.
+        - The default ResultSet type is TYPE_FORWARD_ONLY.
+    2. ResultSet Concurrency: determines what level of update functionality is supported
+        - CONCUR_READ_ONLY: The ResultSet object cannot be updated using the ResultSet interface
+        - CONCUR_UPDATABLE: The ResultSet object can be updated using the ResultSet interface
+        - The default ResultSet concurrency is CONCUR_READ_ONLY
+    3. Cursor Holdability:
+        - It gives the application control over whether ResultSet objects (cursors) are closed when the method
+        Connection.commit is called during the current transaction
+        - The following ResultSet constants may be supplied to the Connection methods createStatement, prepareStatement,
+        and prepareCall:
+            . HOLD_CURSORS_OVER_COMMIT: ResultSet cursors are not closed; they are holdable: they are held open when the
+            method commit is called. Holdable cursors might be ideal if your application uses mostly read-only ResultSet
+            objects
+            . CLOSE_CURSORS_AT_COMMIT: ResultSet objects (cursors) are closed when the commit method is called. Closing
+            cursors when this method is called can result in better performance for some applications
+        - The default cursor holdability varies depending on your DBMS
+        - NOTE: Not all JDBC drivers and databases support holdable and non-holdable cursors
+- Statement.close to immediately release the resources it is using. When you call this method, its ResultSet objects are
+closed
+- EX:
+    public static void alternateViewTable(Connection con) throws SQLException {
+        Statement stmt = null;
+        String query =
+            "select COF_NAME, SUP_ID, PRICE, " + "SALES, TOTAL from COFFEES";
+        try {
+            stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                String coffeeName = rs.getString(1);
+                int supplierID = rs.getInt(2);
+                float price = rs.getFloat(3);
+                int sales = rs.getInt(4);
+                int total = rs.getInt(5);
+                System.out.println(coffeeName + "\t" + supplierID + "\t" + price + "\t" + sales + "\t" + total);
+            }
+        } catch (SQLException e ) {
+            e.printSQLException();
+        } finally {
+            if (stmt != null) { stmt.close(); }
+        }
+    }

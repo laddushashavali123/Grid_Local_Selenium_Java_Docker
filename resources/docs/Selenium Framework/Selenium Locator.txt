@@ -1,0 +1,131 @@
+Reference :
+	- http://www.techbeamers.com/use-locators-selenium/
+	- http://www.techbeamers.com/findelement-and-findelements-commands-examples/#by.4
+	- https://devhints.io/xpath
+	- https://www.guru99.com/xpath-selenium.html
+	- http://www.seleniumeasy.com/selenium-tutorials/xpath-tutorial-for-selenium
+
+	
+Locator:
+	- Locator is a command that tells Selenium IDE which GUI elements.
+	- Identification of correct GUI elements is a prerequisite to creating an automation script.
+
+	
+Difference Between FindElement And FindElements Methods:
+	1. FindElement() Method:
+		- You can use this command to access any single element on the web page.
+		- It returns the object of the first matching element of the specified locator.
+		- It throws a NoSuchElementException exception when it fails to find If the element.
+		- Syntax:
+			WebElement user = driver.findElement(By.id(�User�));
+	
+	2. FindElements() Method:
+		- It gives back the whole list of all the elements matching the specified locator.
+		- If the element doesn't exist or not available on the page then, the return value will be an empty list.
+		- Syntax:
+			List<WebElement> linklist = driver.findElements(By.xpath(�//table/tr�));
+	
+	
+Types of locator in Selenium:	
+	1. By ID:
+		- This method will return the first element matching the id attribute value.
+		- Ideally, the ID should not repeat on a page, but the browsers do allow exceptions to this rule.
+		- Cons: Works well only on elements with fixed ids and not generated ones
+		- Syntax: 
+			<input id="user" class="required" type="text"/>
+			WebElement item = driver.findElement(By.id("user"));
+			
+	2. By Name:
+		- This method will return the first element matching the name attribute value.
+		- Ideally, every form has input fields with unique names.
+		- Names are unique most of the times, but it�s not a restriction.
+		- Cons: 
+			Works well only on elements with fixed ids and not generated ones.
+			Using it with a dynamically generated list is tough.
+		- Syntax: 
+			<input id="user" name="admin" class="required" type="text"/>
+			WebElement locator = driver.findElement(By.name("admin"));
+			
+	3. By Class name:
+		- This method gives you the element which matches the values specified in the �class� attribute.
+		- If the element has more than one class, then this method will match against each one of them.
+		- Syntax:
+			<input id="user" name="admin" class="required" type="text"/>
+			WebElement locator = driver.findElement(By.name("required"));
+	
+	4. By Tag name:
+		- This method finds the elements matching the specified tag name.
+		- This method is used when you want to extract the content within a tag or wish to perform any action on the tag
+		element.
+		- Syntax:
+			<form action="viewuser.asp" method="get" id="userform">
+				Name: <input type="text" name="name"><br>
+				 Age: <input type="text" name="age"><br>
+			</form>
+			<button type="submit" form="userform" value="Submit">Submit</button>
+			WebElement form = driver.findElement(By.tagName("button"));
+			// You can now perform any action on the form button.
+			form.submit();
+			
+	5. Link Text:
+		- To select the link element which contains the matching text.
+		- It is a perfect way to find the links on a page or checking navigation flows.
+		- Cons:
+			It will only work for anchor tags.
+			You need to provide the link text for it to work.
+		- Syntax:
+			<a href="http://www.techbeamers.com">How to use locators?</a>
+			WebElement item = driver.findElement(By.linkText("How to use locators?"));
+		
+	6. Partial Link Text:
+		- To Select Link (Anchor Tag) Element Which Contains Text Matching The Specified Partial Link Text.
+		- Syntax:
+			<a href="http://www.techbeamers.com">How to use locators?</a>
+			WebElement item = driver.findElement(By.PartialLinkText("How to use locators?"));
+			
+	7. CSS Selector:
+		- The CSS is cascading style sheet; it sets the styles for a web page and its elements.
+		- This method use a CSS selector to locate the element.
+		- Tag and ID uses specific tag#id attribute to get to the first element on a web page.
+		- Tag and Class uses specific tag.class attribute to get to the first element on a web page.
+		- Tag and Attribute use specific tag[attribute=value] to get to the first element on a web page.	
+		- Syntax:
+			<input class="email" id="IdEmail" type="text" tabindex="1" placeholder="your@email.com">
+			WebElement emailText = driver.findElement(By.cssSelector("input#IdEmail"));
+			WebElement emailText = driver.findElement(By.cssSelector("input.email"));
+			WebElement emailText = driver.findElement(By.cssSelector("input.email[tabindex=1]"));
+			
+	8. XPath: 
+		- XPath is a short name for the XML path. It is a syntax or language for finding any element on the web page
+		using XML path expression.
+		- XPath is used to find the location of any element on a webpage using HTML DOM structure (XML structure).
+		- XPath locators has 2 types: Asolute path and Relative path.
+		- Absolute XPath:
+			+ Start with the single forward slash(/), which means the path start from root node.
+			+ Advantage: it identifies the element very fast.
+			+ Disadvantage: if there are any changes made in the path of the element then that XPath gets failed. 
+			+ Example: /html/body/div[1]/div[1]/div/h4[1]/b
+		- Relative path:
+			+ Starts with Double forward slash(//), which means the path start from the node of your choise - it doesn't
+			need to start from the root node.
+			+ Advantage: don't need to mention the long xpath, you can start from the middle or in between.
+			+ Disadvantage: take more time in identifying the element as we specify the partial path not (exact path).
+			+ Example: //*[@class='featured-box']
+	
+		9. XPath axes:
+		- Axes methods are used to find the complex or dynamic elements which not possible by normal XPath method having
+		no ID , Classname, Name, ... or dynamically change on refresh or any other operations.
+		- Few commonly axes methods is used in Selenium Webdriver:
+			+ Following: Selects everything in the document after the closing tag of the current node.
+                //*[text()='Multimedia Office Premium']/following::tr
+			+ Following-sibling: Selects all siblings after the current node within same parent with current node
+                //*[text()='Multimedia Office Premium']/following::td
+			+ Ancestor: Selects all ancestors (parent, grandparent, etc.) of the current node.
+                //*[text()='Multimedia Office Premium']/ancestor::tr/td/input
+			+ Child: Selects all children of the current node.
+
+
+Apart from the above examples, you can also perform partial matching on Html attributes.
+1) ^= as in input[id^='Tech'] means Starting with the given string.
+2) $= as in input[id$='_Beamers'] means Ending with the given text.
+3) *= as in Input[id*='techbeamers'] means Containing the given value.

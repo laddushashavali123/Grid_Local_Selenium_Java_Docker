@@ -1,0 +1,122 @@
+Reference:
+    1. https://www.geeksforgeeks.org/lambda-expressions-java-8/
+    2.
+
+========================================================================================================================
+	Lambda expressions express instances of functional interfaces
+========================================================================================================================
+- A lambda expression provides a way to represent one method interface using an expression. A lambda expression is like a method, it provides a list of formal parameters and a body (which can be an expression or a block of code) expressed in terms of those parameters.
+- Syntax:
+	(parameters) -> expression                or         (parameters) -> { statements; }
+- Example:
+	1. () -> 5                           		// takes no value and returns 5
+	2. x -> 2 * x            			// takes a number and returns the result of doubling it
+	3. (x, y) -> x – y                     		// takes two numbers and returns their difference
+	4. (int x, int y) -> x + y      		// takes two integers and returns their sum
+	5. (String s) -> System.out.print(s) 		// takes a string and print
+	6. Loop through with lambda:
+		String[] atp = {"Rafael Nadal", "Novak Djokovic", "Stanislas Wawrinka", "David Ferrer", "Roger Federer", "Andy Murray", "Tomas Berdych", "Juan Martin Del Potro"};
+		List<String> players =  Arrays.asList(atp);
+       		// Old looping
+		for (String player : players) {
+     			System.out.print(player + "; ");
+		}
+       		// Using lambda expression and functional operations
+		players.forEach((player) -> System.out.print(player + "; "));
+	7. Sort collection with lambda
+		// Sort players by surname using anonymous innerclass
+		Arrays.sort(players, new Comparator<String>() {
+		@Override
+		public int compare(String s1, String s2) {
+			return (s1.substring(s1.indexOf(" ")).compareTo(s2.substring(s2.indexOf(" "))));
+		}});
+ 
+		// Sort players by surname using lambda expression
+		Comparator<String> sortBySurname = (String s1, String s2) -> (s1.substring(s1.indexOf(" ")).compareTo(s2.substring(s2.indexOf(" "))));
+		Arrays.sort(players, sortBySurname);
+
+		// or this
+		Arrays.sort(players, (String s1, String s2) -> (s1.substring(s1.indexOf(" ")).compareTo(s2.substring(s2.indexOf(" ")))));
+ 
+		// Sort players by name lenght using anonymous innerclass
+		Arrays.sort(players, new Comparator<String>() {
+		@Override
+		public int compare(String s1, String s2) {
+			return (s1.length() - s2.length());
+		}});
+ 
+		// Sort players by name lenght using lambda expression
+		Comparator<String> sortByNameLenght = (String s1, String s2) -> (s1.length() - s2.length());
+ 		Arrays.sort(players, sortByNameLenght);
+		
+		// or this
+		Arrays.sort(players, (String s1, String s2) -> (s1.length() - s2.length()));
+ 
+		// Sort players by last letter using anonymous innerclass
+		Arrays.sort(players, new Comparator<String>() {
+		@Override
+		public int compare(String s1, String s2) {
+			return (s1.charAt(s1.length() - 1) - s2.charAt(s2.length() - 1));
+		}});
+ 
+		// Sort players by last letter using lambda expression
+		Comparator<String> sortByLastLetter = (String s1, String s2) -> (s1.charAt(s1.length() - 1) - s2.charAt(s2.length() - 1));
+		Arrays.sort(players, sortByLastLetter);
+		
+		// or this
+		Arrays.sort(players, (String s1, String s2) -> (s1.charAt(s1.length() - 1) - s2.charAt(s2.length() - 1)));
+ 
+- Using lambda with stream:
+	public Person(String firstName, String lastName, String job, String gender, int age, int salary)       {
+        	this.firstName = firstName;
+		this.lastName = lastName;
+		this.gender = gender;
+		this.age = age;
+		this.job = job;
+		this.salary = salary;
+	}
+	List<Person> javaProgrammers = new ArrayList<Person>() {
+            {	add(new Person("Elsdon", "Jaycob", "Java programmer", "male", 43, 2000));
+                add(new Person("Tamsen", "Brittany", "Java programmer", "female", 23, 1500));
+                add(new Person("Floyd", "Donny", "Java programmer", "male", 33, 1800));
+            }};
+	    
+	// Print out all the javaProgrammers
+	javaProgrammers.forEach((p) -> System.out.printf("%s %s; ", p.getFirstName(), p.getLastName()));
+	
+	// Increase programmer’s salary by 5%
+	Consumer<Person> giveRaise = e -> e.setSalary(e.getSalary() / 100 * 5 + e.getSalary());
+	javaProgrammers.forEach(giveRaise);
+	
+	// Show PHP programmers that earn more than $1,400
+	javaProgrammers.stream()
+        	.filter((p) -> (p.getSalary() > 1400))
+        	.forEach((p) -> System.out.printf("%s %s; ", p.getFirstName(), p.getLastName()));
+		
+	// We can also define filters and then reuse them in further operations
+	// Define some filters
+	Predicate<Person> ageFilter = (p) -> (p.getAge() > 25);
+	Predicate<Person> salaryFilter = (p) -> (p.getSalary() > 1400);
+	Predicate<Person> genderFilter = (p) -> ("female".equals(p.getGender()));
+ 
+	System.out.println("Show female PHP programmers that earn more than $1,400 and are older than 24 years:");
+	javaProgrammers.stream()
+        	.filter(ageFilter)
+        	.filter(salaryFilter)
+        	.filter(genderFilter)
+        	.forEach((p) -> System.out.printf("%s %s; ", p.getFirstName(), p.getLastName()));
+ 
+	// Reuse filters
+	System.out.println("Show female Java programmers older than 24 years:");
+	javaProgrammers.stream()
+		.filter(ageFilter)
+		.filter(genderFilter)
+		.forEach((p) -> System.out.printf("%s %s; ", p.getFirstName(), p.getLastName()));
+
+	// We can limit the result
+	javaProgrammers.stream()
+        	.filter(genderFilter)
+        	.limit(3)
+         	.forEach((p) -> System.out.printf("%s %s; ", p.getFirstName(), p.getLastName()));
+ 
+	

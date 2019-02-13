@@ -1,0 +1,72 @@
+
+NoSuchElementException: The element that you are trying to fnd does not exist.
+	- The locator that you are using to find the element is incorrect.
+	=> Test your locator: http://yizeng.me/2014/03/23/evaluate-and-validate-xpath-css-selectors-in-chrome-developer-tools/
+				
+	- Something has gone wrong and the element has not been rendered
+	=> Bug in the application or is a previous step failing
+	
+	- You tried to find the element before it was rendered
+	=> Use explicit wait and ExpectedConditions class for waiting website render
+	
+	
+NoSuchFrameException: frame doesn't exist when you try to find it (for both errors with frames and errors with iFrames)
+	- The solutions for a NoSuchElementException should also work for a NoSuchFrameException
+
+	
+NoSuchWindowException: the list of windows that you currently have is not up to date.
+	- One of the windows that previously existed no longer exists and you can't switch to it.
+	=> Check your code and make sure that you are not closing a window without refreshing the available list of windows using: 
+			driver.getWindowHandles();
+			
+	- You may be trying to switch to a window before calling driver.getWindowHandles().
+	=> The best way to track things is to get the handle of the current window before opening up any new windows, using this:
+			String currentWindowHandle = driver.getWindowHandle();
+	When you open a new window and get a list of window handles, you can iterate through the list and ignore the handles for the currently open windows
+	
+	
+ElementNotVisibleException: the WebElement that you are trying to interact with is not visible to the user.
+	- Selenium is very fast and will often try to interact with an element before it has a chance to render the page on the screen
+	=> You will need to wait for the page rendering (or at least your element) to complete before trying to interact with the element
+	
+	
+StaleElementReferenceException: is ouccurred when you work with AJAX,JavaScript-heavy websites, where the DOM is continually being manipulated.
+	- The WebElement object is a reference to a specifc element in the DOM. When the DOM is manipulated and the old element is destroyed, that 
+	reference no longer links to an element in the DOM, and it becomes stale.
+	=> find the element every time with  we want to use it to ensure that we don't get a StaleElementReferenceException.
+	
+	- If we expect the element to be destroyed and recreated.
+	=> find the element with explicit wait condition.
+	
+	- Finally, maybe we're not expecting to get a StaleElementReferenceException. If this is the case, it's good news. Your test may have found a bug that needs to be fxed.
+	
+	
+InvalidElementStateException: You try to interact with WebElement which is not in a state that would allow to perform the action. 
+	- Ex: A password is allow to input when username is filled before
+	=> Wait a little to bit time for website enable
+
+
+SessionNotFoundException: When you lose connection to the browser instance, a SessionNotFoundException will be thrown.
+	- You inadvertently quit the driver instance.
+	- The browser crashed.
+	
+
+UnreachableBrowserException: If we send out commands but cannot get a response, we get an UnreachableBrowserException. It means that you cannot connect to the RemoteWebDriver instance.
+	- The browser didn't start because of the following reasons:
+	=> The browser crashed
+	=> The version of the RemoteWebDriver instance (ChromeDriver, GeckoDriver,...) is incompatible with the version of the using browser.
+	
+	- The browser that you are trying to use has not been installed.
+	- The browser is not installed in the default location and Selenium can't find it.
+	- Network issues.
+
+	
+UnsupportedCommandException: WebDriver implementation that you are running does not support one of the core WebDriver API commands.
+	- Code around the problem by using a different command
+	- Switch to a different WebDriver binding
+	- Write the code required to support the command yourself (and raise a pull request!)
+	
+	
+UnreachableBrowserException: Your selenium binding language does not support a command that is a part of the WebDriver API
+
+	

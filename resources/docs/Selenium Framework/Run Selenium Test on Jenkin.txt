@@ -1,0 +1,20 @@
+Maven Test Runner:
+	1. The Failsafe Plugin is designed to run integration tests
+	2. The Surefire Plugin is designed to run unit tests.
+	3. Both of them can run with TestNG or JUnit test framework
+	4. Default wildcard pattern:
+		- Surefire: **/Test*.java, **/*Test.java, **/*TestCase.java
+		- Failed-safe: **/IT*.java, **/*IT.java, **/*ITCase.java
+
+- Jenkin with Maven:
+	1. Install Maven: https://maven.apache.org/install.html
+	2. Install Jenkin: https://jenkins.io/download/
+	3. Go To Jenkins -> Manage Jenkins -> Global Tool Configuration -> JDK. Provide path to the JDK under JAVA_HOME field
+	4. Access Jenkin web, go to Manage Jenkin > Global Tool Configuration > Add Maven 
+	   Check Install automatically and select the maven zip file
+	5. Access Jenkin web, go to Manage Jenkin > Manage Plugins > Available
+	   Make sure Maven Integration plugin is enabled (checked)
+	6. Create new Jenkin Item with "Build a Maven Project"
+
+- Jenkin Report:
+	1. http://www.softwaretestingmaterial.com/generate-testng-reports-using-jenkins/

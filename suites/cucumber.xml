@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<!-- parallel: which type runs parallel (methods/classes/HelloController/instance)
+	 thread-count: is number of concurrent thread running -->
+<suite name="Suite" parallel="methods" thread-count="1">
+ 	<!-- Supported browser: chrome, firefox, ie, safari -->
+	<parameter name="BrowserName" value="chrome"/>
+
+	<!-- Run test on Selenium Grid: Y/N -->
+	<parameter name="UseRemote" value="N"/>
+	<!-- Set URL of Selenium Grid -->
+	<parameter name="GridURL" value=""/>
+	<!-- Select Node OS Platform -->
+	<parameter name="DesiredPlatform" value=""/>
+	<!-- Select Node Browser Version -->
+	<parameter name="BrowserVersion" value=""/>
+
+    <!-- Use proxy for browser: Y/N -->
+    <parameter name="ProxyEnabled" value="N"/>
+    <!-- Set Proxy host -->
+    <parameter name="ProxyHost" value="localhost"/>
+    <!-- Set Proxy port -->
+    <parameter name="ProxyPort" value="8888"/>
+
+    <test name="Test">
+        <classes>
+            <class name="cucumber.testrunner.TestRunner" />
+        </classes>
+    </test>
+</suite>
